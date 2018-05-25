@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/lwx">
+        <file>icon/1.ico</file>
+    </qresource>
+    <qresource prefix="/MyWidget">
+        <file>Black/close.png</file>
+        <file>Black/closeHover.png</file>
+        <file>Black/closePressed.png</file>
+        <file>Black/maximize.png</file>
+        <file>Black/maximizeHover.png</file>
+        <file>Black/maximizePressed.png</file>
+        <file>Black/minimize.png</file>
+        <file>Black/minimizeHover.png</file>
+        <file>Black/minimizePressed.png</file>
+        <file>Black/restore.png</file>
+        <file>Black/restoreHover.png</file>
+        <file>Black/restorePressed.png</file>
+    </qresource>
+</RCC>
