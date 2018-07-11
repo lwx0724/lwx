@@ -1,17 +1,12 @@
-﻿  Moc'ing MyItem.h...
-  C:\Users\11279\documents\visual studio 2015\Projects\lwx\lwx\MyItem.h(55): Warning: Class MyItem implements the interface QGraphicsItem but does not list it in Q_INTERFACES. qobject_cast to QGraphicsItem will not work!
+﻿  MyItem.cpp
   moc_MyItem.cpp
-  moc_MyWidget.cpp
-  MyItem.cpp
-  MyWidget.cpp
-  main.cpp
-zlib_d.lib(adler32.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(adler32.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-zlib_d.lib(crc32.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(crc32.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-zlib_d.lib(deflate.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(deflate.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-zlib_d.lib(inflate.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(inflate.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-zlib_d.lib(inftrees.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(inftrees.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-zlib_d.lib(inffast.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(inffast.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-zlib_d.lib(trees.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(trees.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-zlib_d.lib(zutil.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(zutil.obj)”或在“C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-  lwx.vcxproj -> C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\lwx.exe
-  lwx.vcxproj -> C:\Users\11279\documents\visual studio 2015\Projects\lwx\x64\Debug\lwx.pdb (Full PDB)
+zlib_d.lib(adler32.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(adler32.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+zlib_d.lib(crc32.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(crc32.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+zlib_d.lib(deflate.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(deflate.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+zlib_d.lib(inflate.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(inflate.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+zlib_d.lib(inftrees.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(inftrees.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+zlib_d.lib(inffast.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(inffast.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+zlib_d.lib(trees.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(trees.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+zlib_d.lib(zutil.obj) : warning LNK4099: 未找到 PDB“zlibstatic.pdb”(使用“zlib_d.lib(zutil.obj)”或在“C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\zlibstatic.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+  lwx.vcxproj -> C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\lwx.exe
+  lwx.vcxproj -> C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\lwx.pdb (Full PDB)

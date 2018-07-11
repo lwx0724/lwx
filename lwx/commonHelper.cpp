@@ -98,7 +98,8 @@ bool commonHelper::dcm2Mat(const char * fileName, cv::Mat & mat)
 		return false;
 	unsigned short *pixdata;
 	result = element->getUint16Array(pixdata);
-
+	//unsigned long *pixdata;
+	//result = element->getUint32Array(pixdata);
 	long rows = 0;
 	long cols = 0;
 	dataset->findAndGetLongInt(DCM_Rows, rows);
@@ -153,6 +154,24 @@ QImage commonHelper::MatToQImage(const cv::Mat &mat)
 		return QImage();
 	}
 }
+
+void commonHelper::CreateNewStr(const char * src1, const char * src2, char * dest)
+{
+	while (*src1 != '\0')
+	{
+		*dest = *src1;
+		src1++;
+		dest++;
+	}
+	while (*src2 != '\0')
+	{
+		*dest = *src2;
+		src2++;
+		dest++;
+	}
+	*dest = '\0';
+}
+
 commonHelper::~commonHelper()
 {
 }

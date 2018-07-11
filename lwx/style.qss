@@ -83,8 +83,8 @@ QPushButton{
 }
 
 QPushButton:hover{
-	background:rgb(255,255,255);
-	color:#000000;
+	background:rgb(60,60,60);
+	color:#00CED1;
 }
 
 QPushButton:checked{

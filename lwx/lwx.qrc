@@ -16,4 +16,9 @@
         <file>Black/restoreHover.png</file>
         <file>Black/restorePressed.png</file>
     </qresource>
+    <qresource prefix="/pixmap">
+        <file>Black/success.png</file>
+        <file>Black/warning.png</file>
+        <file>Black/transparency.png</file>
+    </qresource>
 </RCC>

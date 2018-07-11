@@ -48,6 +48,24 @@
     <ClCompile Include="MyItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="combinedButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialCartoon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractiveView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="testMethod.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="decorateDataType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="concreteDataType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="lwx.h">
@@ -60,6 +78,15 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="MyItem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="combinedButton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tutorialCartoon.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="InteractiveView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -78,6 +105,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globelVariable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testMethod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="decorateDataType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="concreteDataType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

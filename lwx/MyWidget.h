@@ -8,6 +8,10 @@
 #include<QGraphicsView>
 #include<qgraphicsscene>
 #include<qpushbutton.h>
+#include"combinedButton.h"
+#include"tutorialCartoon.h"
+#include"InteractiveView.h"
+#include"qicon.h"
 #pragma execution_character_set("utf-8")
 class MyWidget : public QWidget
 {
@@ -16,19 +20,18 @@ public:
 	MyWidget(QWidget *parent = Q_NULLPTR);
 protected:
 	void paintEvent(QPaintEvent *event);
-//	void mousePressEvent(QMouseEvent *event);
-//	void mouseMoveEvent(QMouseEvent *event);
-//	void mouseReleaseEvent(QMouseEvent *event);
 
-//定义移动发送消息信号
 signals:
-void moveInfoSend();
-signals:
-void drawInfoSend();
-//按下OpenDcmButton响应的槽函数
+void textInfoSend(int index);
 
-//窗体的随意缩放
-	//bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+public slots:
+void infoRecvChangeButton(int &a, int b);//改变小按钮
+void infoRecvParpare(int index);//预备动画
+void emitTextInfo();
+void infoRecvBigButtonState(int a);//改变大按钮状态
+void infoRecvGapNum(double gap);//改变刻度尺的间隔
+void infoRecvTextMessage(int n, double *value);
+
 private:
 	QPoint point;
 	bool pressed;
@@ -37,10 +40,26 @@ private:
 	TitleBar *pTitlebar;
 	////显示图片区域	
 	QGraphicsScene * m_pSence;
-	QGraphicsView *	m_pView;
+//	QGraphicsView *	m_pView;
+	InteractiveView *m_pView;
 	MyItem *m_pItem;//装载dcm图片
+	tutorialCartoon *m_tutorialCartoon;
 	//按钮
 	QPushButton * m_pButtonItemmove;//移动item按钮
 	QPushButton * m_pButtonDrawLine;//画线按钮
+	QPushButton * m_pButtonclearAll;//清除所有点的数据与显示
+	QPushButton * m_pButtonTweed;
+	QButtonGroup * m_pGroup;
+	QLabel *pLabelgroup;
+	combinedButton *m_pButtonGroupWeight;//按钮群weight
+
+ ////小按钮显示状态的图标
+	//QPixmap *pixmap_havePos;
+	//QPixmap *pixmap_noPos;
+	QIcon  *pixmap_havePos;
+	QIcon *pixmap_noPos;
+	QIcon *pixmap_transparency;
+	QPushButton * smallGroup[46];
+	QPushButton * bigGroup[46];
 };
      

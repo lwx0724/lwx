@@ -158,7 +158,7 @@ void TitleBar::onClicked()
 		}
 		else if (pButton == m_pMaximizeButton)
 		{
-			pWindow->isMaximized() ? pWindow->showNormal() : pWindow->showMaximized();
+	//		pWindow->isMaximized() ? pWindow->showNormal() : pWindow->showMaximized();   //使窗口失去最大化功能
 		}
 		else if (pButton == m_pCloseButton)
 		{

@@ -14,6 +14,7 @@ public:
 	static bool dcm2QImage(const char*fileName, QImage &image);//Ã»³É¹¦
 	static bool dcm2Mat(const char* fileName, cv::Mat & mat);
 	static QImage MatToQImage(const cv::Mat&);
+	static void CreateNewStr(const char *src1, const char *src2, char *dest);
 	~commonHelper();
 };
 
