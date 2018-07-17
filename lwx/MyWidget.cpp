@@ -42,7 +42,6 @@ MyWidget::MyWidget(QWidget *parent)
 
 	m_pView = new InteractiveView(this);
 	m_pView->setGeometry(0,40, width() / 2,height() - 40);
-	//m_pView->setFixedSize(width() / 2, height() - 40);
 	m_pView->setScene(m_pSence);
 	m_pView->show();
 	//按钮move
@@ -50,10 +49,10 @@ MyWidget::MyWidget(QWidget *parent)
 	m_pButtonItemmove->setGeometry(width()/2 + 5, (height() - 40) / 2, 50, 30);
 	m_pButtonItemmove->setText("移动");
 	m_pButtonItemmove->setCheckable(true);
-	m_pButtonItemmove->setChecked(true);
+
 	m_pButtonItemmove->setAutoExclusive(true);
 	m_pButtonItemmove->show();
-	//m_pButtonItemmove->setFocus();//默认设置移动为初始焦点
+
 	connect(m_pButtonItemmove, SIGNAL(clicked(bool)), m_pItem, SLOT(infoRecvMove()));
 
 	//按钮draw
@@ -61,6 +60,7 @@ MyWidget::MyWidget(QWidget *parent)
 	m_pButtonDrawLine->setGeometry(width() / 2 + 60, (height() - 40) / 2, 50, 30);
 	m_pButtonDrawLine->setText("画线");
 	m_pButtonDrawLine->setCheckable(true);
+	m_pButtonDrawLine->setChecked(true);
 	m_pButtonDrawLine->setAutoExclusive(true);
 	m_pButtonDrawLine->show();
 	connect(m_pButtonDrawLine, SIGNAL(clicked(bool)), m_pItem, SLOT(infoRecvDraw()));
@@ -84,20 +84,37 @@ MyWidget::MyWidget(QWidget *parent)
 	pLabelgroup->setStyleSheet("color:white");
 	pLabelgroup->setGeometry(1160 ,470,80,20);
 	pLabelgroup->show();
+	//创建测试按钮
+	m_pGroup = new QButtonGroup(this);
+	for (int i = 0; i < 5; i++)
+	{
+		m_pButtonMethod[i] = new QPushButton(this);
+		m_pButtonMethod[i]->setGeometry(1163, 490+30*i, 40, 25);
+		m_pButtonMethod[i]->setText(methodName[i]);
+		m_pGroup->addButton(m_pButtonMethod[i], i);
+		m_pButtonMethod[i]->setCheckable(true);
+		m_pButtonMethod[i]->setAutoExclusive(true);
+		m_pButtonMethod[i]->show();
+		
+	}
+	m_pButtonMethod[0]->setChecked(true);
 
-	m_pButtonTweed = new QPushButton(this);
-	m_pButtonTweed->setGeometry(1163,490,40,25);
-	m_pButtonTweed->setText("Tweed");
-	m_pButtonTweed->setCheckable(true);
-	m_pButtonTweed->setAutoExclusive(true);
-	m_pButtonTweed->show();
-//	m_pGroup = new QButtonGroup(this);
-//	m_pGroup->addButton(m_pButtonTweed);
-    connect(m_pButtonTweed, SIGNAL(clicked(bool)), this, SLOT(emitTextInfo()));
-	//connect(m_pButtonTweed, SIGNAL(clicked(bool)), m_pItem, SLOT(infoRecvDraw()));
+	//默认方法下的小图标初始化
+	int defualtPointNum = 46;
+	for (int i = 0; i < defualtPointNum; i++)
+	{
+		smallGroup[i]->setIcon(*pixmap_noPos);
+		smallGroup[i]->setIconSize(smallGroup[i]->size());
+		smallGroup[i]->setStyleSheet(" border-color: #E6E6FA;border-width: 0px;border-style: solid;");
+	}
+		
+	connect(m_pButtonMethod[0], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo0()));
+	connect(m_pButtonMethod[1], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo1()));
+	connect(m_pButtonMethod[2], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo2()));
+	connect(m_pButtonMethod[3], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo3()));
+	connect(m_pButtonMethod[4], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo4()));
 	connect(this, SIGNAL(textInfoSend(int)), m_pItem, SLOT(infoRecvText(int)));
 	connect(this, SIGNAL(textInfoSend(int)), m_pButtonGroupWeight, SLOT(infoRecvText(int)));
-//	connect(this, SIGNAL(gapInfoSend(double)), m_pView, SLOT(infogetGapNum(double)));
 	bigGroup[44]->setStyleSheet("background:rgb(46,139,87);");
 	QCoreApplication::processEvents();//防止事件队列堵塞
 }
@@ -113,23 +130,41 @@ void MyWidget::infoRecvParpare(int index)
 {
 	m_tutorialCartoon->setCurnetCattoon(index);
 }
+void MyWidget::emitTextInfo0()
+{
+	emit textInfoSend(0);
+	infoRecvBigButtonState(m_pItem->getCurrentDrawIndex());
+}
 //
-void MyWidget::emitTextInfo()
+void MyWidget::emitTextInfo1()
 {
 	emit textInfoSend(1);
 	infoRecvBigButtonState(m_pItem->getCurrentDrawIndex());
-	
+}
 
+void MyWidget::emitTextInfo2()
+{
+	emit textInfoSend(2);
+	infoRecvBigButtonState(m_pItem->getCurrentDrawIndex());
+}
+
+void MyWidget::emitTextInfo3()
+{
+	emit textInfoSend(3);
+	infoRecvBigButtonState(m_pItem->getCurrentDrawIndex());
+}
+
+void MyWidget::emitTextInfo4()
+{
+	emit textInfoSend(4);
+	infoRecvBigButtonState(m_pItem->getCurrentDrawIndex());
 }
 
 void  MyWidget::infoRecvGapNum(double gap)
 {
 	m_pView->setGapNum(gap);
 	m_pView->viewport()->update();//更新视口绘制，不是m_pView->updat
-//	m_pView->update();
-//  this->update();
-//	m_pView->show();
-//	qApp->processEvents();
+
 }
 
 void MyWidget::infoRecvTextMessage( int n, double * value)
@@ -163,21 +198,15 @@ void MyWidget::infoRecvChangeButton(int &a, int b)
 {
 	if (b == 0)
 	{
-		//smallGroup[a]->setFlat(true);
 		smallGroup[a]->setIcon(*pixmap_noPos);
 		smallGroup[a]->setIconSize(smallGroup[a]->size());
 		smallGroup[a]->setStyleSheet(" border-color: #E6E6FA;border-width: 0px;border-style: solid;");
-	//	smallGroup[a]->show();
-	//	m_pButtonGroupWeight->setSmallGroup(a,smallGroup[a]);
 	}
 	else if(b ==1)
 	{
-		//smallGroup[a]->setFlat(true);
 		smallGroup[a]->setIcon(*pixmap_havePos);
 		smallGroup[a]->setIconSize(smallGroup[a]->size());
 		smallGroup[a]->setStyleSheet(" border-color: #E6E6FA;border-width: 0px;border-style: solid;");
-	// bn  	smallGroup[a]->show();
-	//	m_pButtonGroupWeight->setSmallGroup(a, smallGroup[a]);
 	}
 	else if (b == 2)
 	{

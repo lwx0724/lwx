@@ -146,16 +146,10 @@ combinedButton::combinedButton( qreal _posX, qreal _posY, MyItem *item, tutorial
 		bigGroup[i]->setToolTip(toothPosition_CHINA[i]);
 		bigGroup[i]->setText(toothPosition_ENGLISH[i]);
 		bigGroup[i]->setCheckable(true);
-	//	bigGroup[i]->setEnabled(false);
-	//	bigGroup[i]->blockSignals(true);// 屏蔽信号
-	//	bigGroup[i]->setDisabled(true);
 		bigGroup[i]->setAutoExclusive(true);
 		bigGroup[i]->installEventFilter(this);
 
-	smallGroup[i]->setCheckable(true);
-	//	smallGroup[i]->blockSignals(true);
-		//smallGroup[i]->setEnabled(false);
-	//	smallGroup[i]->setDisabled(true);
+		smallGroup[i]->setCheckable(true);
 		smallGroup[i]->setAutoExclusive(true);
 		smallGroup[i]->setFlat(true);
 		smallGroup[i]->setStyleSheet(" border-color: #E6E6FA;border-width: 1px;border-style: solid;");
@@ -163,16 +157,24 @@ combinedButton::combinedButton( qreal _posX, qreal _posY, MyItem *item, tutorial
 
 	}
 
-
 	connect(this, SIGNAL(buttonNumberInfo(int &)), item, SLOT(infoRecvUpdata(int &)));
 	connect(this, SIGNAL(buttonNumberInfo(int &)), cartoon, SLOT(infoRecvCartoon(int &)));
 	connect(this, SIGNAL(smallInfo(int &)), item, SLOT(infoRecvClear(int &)));
 	connect(this, SIGNAL(smallInfo2(int &)), item, SLOT(infoRecvClear2(int &)));
+
+	text = new int[46];//初始化测试方法，默认为全部
+	text[0] = 44;
+	text[1] = 45;
+	for (int i = 2; i < 46; i++)
+	{
+		text[i] = i - 2;
+	}
+	topNum = 46;
+	
 }
 
 bool combinedButton::eventFilter(QObject * obj, QEvent * e)
 {
-
 	for (int i = 0; i < 46; i++)
 	{
 		if (obj == bigGroup[i])
@@ -184,9 +186,6 @@ bool combinedButton::eventFilter(QObject * obj, QEvent * e)
 				{
 					currentIndex_big = i;
 					emit buttonNumberInfo(i);
-					
-				//	bigButton_clicked = true;
-				//	qDebug() << "output bigButton:" << i << endl;
 				}
 				return true;
 			}
@@ -204,16 +203,11 @@ bool combinedButton::eventFilter(QObject * obj, QEvent * e)
 				{
 					currentIndex_small = i;
 					emit smallInfo(i);
-					//	bigButton_clicked = true;
-					//	qDebug() << "output bigButton:" << i << endl;
 				}
 				return true;
-
 			}
 		}
-	}
-
-	
+	}	
 	return QWidget::eventFilter(obj, e);
 }
 
@@ -243,6 +237,55 @@ void combinedButton::getBigGroup(int a, QPushButton * _temp)
 
 }
 
+void combinedButton::initializeSmallButton(int level)
+{
+	int  a = 0;
+	const int *temp;//获取当前关卡的所需点的全局数组
+	switch (level)
+	{
+	case 0: a = 46;//本轮测试方法涉及的点加上1cmA和1cmB这两个
+		temp = DefalutPoint;
+		break;
+	case 1: a = 23;
+		temp = Tweed;
+		break;
+	case 2: a = 18;
+		temp = Downs;
+		break;
+	case 3: a = 13;
+		temp = Wylie;
+		break;
+	case 4: a = 17;
+		temp = tissue;
+		break;
+	default:
+		a = 46;
+		break;
+	}
+	if (text != NULL)
+	{
+  		delete text;
+		text = NULL;
+	}
+	
+	text = new int[a];
+	text[0] = 44;
+	text[1] = 45;
+	for (int i = 2; i < a; i++)
+	{
+		text[i] = temp[i - 2];
+	}
+	//显示小按钮初始图片
+	if (!bInitialize)
+	{
+		for (int i = 0; i < 46; i++)
+		{
+			emit smallInfo2(i);//初始按钮群小按钮图案
+		}
+		bInitialize = true;
+	}
+}
+
 
 
 void combinedButton::infoRecvText(int a)
@@ -250,28 +293,28 @@ void combinedButton::infoRecvText(int a)
 	
 	switch (a)
 	{
+	case 0:
+		bInitialize=false;
+		initializeSmallButton(0);
+		break;
 	case 1:	
-		text = new int[23];
-		text[0] = 44;
-		text[1] = 45;
-		for (int i = 2; i < 23; i++)
-		{
-			text[i] = Tweed[i-2];
-		}
-		topNum = 23;
-		//显示小按钮初始图片
-		if (!bInitialize)
-		{
-			for (int i = 0; i < topNum; i++)
-			{
-				emit smallInfo2(text[i]);//初始按钮群小按钮图案
-			}   
-			bInitialize = true;
-		}
+		bInitialize = false;
+		initializeSmallButton(1);
 		break;
 	case 2:
+		bInitialize = false;
+		initializeSmallButton(2);
 		break;
 
+	case 3:
+		bInitialize = false;
+		initializeSmallButton(3);
+		break;
+
+	case 4:
+		bInitialize = false;
+		initializeSmallButton(4);
+		break;
 	default:
 		break;
 	}

@@ -187,19 +187,6 @@ private:
 	QVector<QPointF>& m_newVector;
 };
 
-//class surfaceHeightRatio : public decorateDataType
-//{
-//public:
-//	surfaceHeightRatio(QVector<QPointF>& _newVector, int _x, int _y);
-//	void drawLineJudge();
-//	void datacalculate();
-//private:
-//	void addLineJudge();
-//	void addCalculate();
-//private:
-//	QVector<QPointF>& m_newVector;
-//};
-
 class surfaceAngle : public decorateDataType
 {
 public:
@@ -212,19 +199,7 @@ private:
 private:
 	QVector<QPointF>& m_newVector;
 };
-//
-//class surfaceAngle : public decorateDataType
-//{
-//public:
-//	surfaceAngle(QVector<QPointF>& _newVector, int _x, int _y);
-//	void drawLineJudge();
-//	void datacalculate();
-//private:
-//	void addLineJudge();
-//	void addCalculate();
-//private:
-//	QVector<QPointF>& m_newVector;
-//};
+
 
 class jawRaiseAngle : public decorateDataType
 {

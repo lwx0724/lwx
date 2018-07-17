@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MyWidget_t {
-    QByteArrayData data[17];
-    char stringdata0[166];
+    QByteArrayData data[21];
+    char stringdata0[223];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,22 +38,27 @@ QT_MOC_LITERAL(5, 50, 4), // "int&"
 QT_MOC_LITERAL(6, 55, 1), // "a"
 QT_MOC_LITERAL(7, 57, 1), // "b"
 QT_MOC_LITERAL(8, 59, 15), // "infoRecvParpare"
-QT_MOC_LITERAL(9, 75, 12), // "emitTextInfo"
-QT_MOC_LITERAL(10, 88, 22), // "infoRecvBigButtonState"
-QT_MOC_LITERAL(11, 111, 14), // "infoRecvGapNum"
-QT_MOC_LITERAL(12, 126, 3), // "gap"
-QT_MOC_LITERAL(13, 130, 19), // "infoRecvTextMessage"
-QT_MOC_LITERAL(14, 150, 1), // "n"
-QT_MOC_LITERAL(15, 152, 7), // "double*"
-QT_MOC_LITERAL(16, 160, 5) // "value"
+QT_MOC_LITERAL(9, 75, 13), // "emitTextInfo0"
+QT_MOC_LITERAL(10, 89, 13), // "emitTextInfo1"
+QT_MOC_LITERAL(11, 103, 13), // "emitTextInfo2"
+QT_MOC_LITERAL(12, 117, 13), // "emitTextInfo3"
+QT_MOC_LITERAL(13, 131, 13), // "emitTextInfo4"
+QT_MOC_LITERAL(14, 145, 22), // "infoRecvBigButtonState"
+QT_MOC_LITERAL(15, 168, 14), // "infoRecvGapNum"
+QT_MOC_LITERAL(16, 183, 3), // "gap"
+QT_MOC_LITERAL(17, 187, 19), // "infoRecvTextMessage"
+QT_MOC_LITERAL(18, 207, 1), // "n"
+QT_MOC_LITERAL(19, 209, 7), // "double*"
+QT_MOC_LITERAL(20, 217, 5) // "value"
 
     },
     "MyWidget\0textInfoSend\0\0index\0"
     "infoRecvChangeButton\0int&\0a\0b\0"
-    "infoRecvParpare\0emitTextInfo\0"
-    "infoRecvBigButtonState\0infoRecvGapNum\0"
-    "gap\0infoRecvTextMessage\0n\0double*\0"
-    "value"
+    "infoRecvParpare\0emitTextInfo0\0"
+    "emitTextInfo1\0emitTextInfo2\0emitTextInfo3\0"
+    "emitTextInfo4\0infoRecvBigButtonState\0"
+    "infoRecvGapNum\0gap\0infoRecvTextMessage\0"
+    "n\0double*\0value"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,7 +68,7 @@ static const uint qt_meta_data_MyWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -71,15 +76,19 @@ static const uint qt_meta_data_MyWidget[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   49,    2, 0x06 /* Public */,
+       1,    1,   69,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       4,    2,   52,    2, 0x0a /* Public */,
-       8,    1,   57,    2, 0x0a /* Public */,
-       9,    0,   60,    2, 0x0a /* Public */,
-      10,    1,   61,    2, 0x0a /* Public */,
-      11,    1,   64,    2, 0x0a /* Public */,
-      13,    2,   67,    2, 0x0a /* Public */,
+       4,    2,   72,    2, 0x0a /* Public */,
+       8,    1,   77,    2, 0x0a /* Public */,
+       9,    0,   80,    2, 0x0a /* Public */,
+      10,    0,   81,    2, 0x0a /* Public */,
+      11,    0,   82,    2, 0x0a /* Public */,
+      12,    0,   83,    2, 0x0a /* Public */,
+      13,    0,   84,    2, 0x0a /* Public */,
+      14,    1,   85,    2, 0x0a /* Public */,
+      15,    1,   88,    2, 0x0a /* Public */,
+      17,    2,   91,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -88,9 +97,13 @@ static const uint qt_meta_data_MyWidget[] = {
     QMetaType::Void, 0x80000000 | 5, QMetaType::Int,    6,    7,
     QMetaType::Void, QMetaType::Int,    3,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    6,
-    QMetaType::Void, QMetaType::Double,   12,
-    QMetaType::Void, QMetaType::Int, 0x80000000 | 15,   14,   16,
+    QMetaType::Void, QMetaType::Double,   16,
+    QMetaType::Void, QMetaType::Int, 0x80000000 | 19,   18,   20,
 
        0        // eod
 };
@@ -104,10 +117,14 @@ void MyWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 0: _t->textInfoSend((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 1: _t->infoRecvChangeButton((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 2: _t->infoRecvParpare((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->emitTextInfo(); break;
-        case 4: _t->infoRecvBigButtonState((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: _t->infoRecvGapNum((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 6: _t->infoRecvTextMessage((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< double*(*)>(_a[2]))); break;
+        case 3: _t->emitTextInfo0(); break;
+        case 4: _t->emitTextInfo1(); break;
+        case 5: _t->emitTextInfo2(); break;
+        case 6: _t->emitTextInfo3(); break;
+        case 7: _t->emitTextInfo4(); break;
+        case 8: _t->infoRecvBigButtonState((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 9: _t->infoRecvGapNum((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 10: _t->infoRecvTextMessage((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< double*(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -148,13 +165,13 @@ int MyWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 11)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 7;
+        _id -= 11;
     }
     return _id;
 }

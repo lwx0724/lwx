@@ -23,8 +23,8 @@ void FMIA::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		longLinePoOr(m_painter, m_newVector, m_x, m_y);
-		longLineLIALI(m_painter, m_newVector, m_x, m_y);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,21,0);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,27,26);
 	}
 }
 
@@ -63,8 +63,8 @@ void FMA::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		longLinePoOr(m_painter, m_newVector, m_x, m_y);
-		longLineT2Me(m_painter, m_newVector, m_x, m_y);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,21,0);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y, 10,11);
 	}
 }
   
@@ -105,8 +105,8 @@ void IMPA::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		longLineLIALI(m_painter, m_newVector, m_x, m_y);
-		longLineT2Me(m_painter, m_newVector, m_x, m_y);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y, 27, 26);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y, 10, 11);
 	}
 }
 
@@ -146,8 +146,8 @@ void SNA::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		radialNS(m_painter, m_newVector, m_x, m_y);
-		lineNA(m_painter, m_newVector);
+		radialXtoY(m_painter, m_newVector, m_x, m_y,19,20);
+		lineXtoY(m_painter, m_newVector,19,2);
 	}
 }
 
@@ -187,8 +187,8 @@ void SNB2::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		radialNS(m_painter, m_newVector, m_x, m_y);
-		lineNB(m_painter, m_newVector);
+		radialXtoY(m_painter, m_newVector, m_x, m_y, 19, 20);
+		lineXtoY(m_painter, m_newVector, 19, 6);
 	}
 }
 
@@ -228,8 +228,8 @@ void ANB::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		lineNA(m_painter, m_newVector);
-		lineNB(m_painter, m_newVector);
+		lineXtoY(m_painter, m_newVector, 19, 6);
+		lineXtoY(m_painter, m_newVector, 19, 2);
 	}
 }
 
@@ -318,7 +318,8 @@ void OP::addLineJudge()
 	if (m_painter != NULL)
 	{
 		lineQ1Q2(m_painter, m_newVector);
-		longLinePoOr(m_painter,m_newVector,m_x,m_y);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,21,0);
+		//longLinePoOr(m_painter,m_newVector,m_x,m_y);
 	}
 }
 
@@ -364,8 +365,8 @@ void Z::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		longLineLLPos(m_painter, m_newVector,m_x,m_y);
-		longLinePoOr(m_painter, m_newVector, m_x, m_y);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,40,43);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,0,21);
 	}
 }
 
@@ -441,7 +442,7 @@ void chinDistance::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		lineNB(m_painter, m_newVector);
+		lineXtoY(m_painter, m_newVector,19,6);
 	}
 }
 
@@ -481,7 +482,7 @@ void ART1::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		longLineART1(m_painter, m_newVector,m_x,m_y);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,13,12);
 	}
 }
 
@@ -521,7 +522,7 @@ void PNSANS::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		linePNSANS(m_painter, m_newVector);
+		lineXtoY(m_painter, m_newVector,3,1);
 	}
 }
 
@@ -561,8 +562,8 @@ void surfaceHeightRatio::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		longLineART1(m_painter, m_newVector, m_x, m_y);
-		linePNSANS(m_painter, m_newVector);
+		longLineXtoY(m_painter, m_newVector, m_x, m_y,13,12);
+		lineXtoY(m_painter, m_newVector,3,1);
 	}
 }
 
@@ -572,8 +573,10 @@ void surfaceHeightRatio::addCalculate()
 	{
 		double distance1 = lineDistance(m_newVector[13], m_newVector[12]);
 		double distance2 = lineDistance(m_newVector[3], m_newVector[1]);
-		if (m_value != NULL)
+		if (m_value != NULL&&distance2!=0)
 			m_value[13] = distance1/distance2;
+		else
+			m_value[13] = -1;
 	}
 	else
 	{
@@ -603,8 +606,8 @@ void surfaceAngle::addLineJudge()
 {
 	if (m_painter != NULL)
 	{
-		longLinePoOr(m_painter, m_newVector, m_x, m_y);
-		lineNPog(m_painter, m_newVector);
+		longLineXtoY(m_painter,m_newVector,m_x,m_y,21,0);
+		lineXtoY(m_painter, m_newVector,8,19);
 	}
 }
 
@@ -1256,7 +1259,7 @@ void N_ANS::addLineJudge()
 
 void N_ANS::addCalculate()
 {
-	if (m_newVector[0] != QPointF(-200.0, -200.0) && m_newVector[10] != QPointF(-200.0, -200.0) && m_newVector[19] != QPointF(-200.0, -200.0) && m_newVector[21] != QPointF(-200.0, -200.0))
+	if (m_newVector[0] != QPointF(-200.0, -200.0) && m_newVector[1] != QPointF(-200.0, -200.0) && m_newVector[19] != QPointF(-200.0, -200.0) && m_newVector[21] != QPointF(-200.0, -200.0))
 	{
 		//判断N，ANS是否在PoOr同侧
 		bool temp1 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[19]);
@@ -1388,10 +1391,10 @@ void N_ANS_Ratio::addCalculate()
 		//全面高
 		//判断N，ANS是否在PoOr同侧
 		bool temp1 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[19]);
-		bool temp2 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[1]);
+		bool temp2 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[10]);
 		double Alldistance = 0.0;
 		double distance1 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[19]);
-		double distance2 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[1]);
+		double distance2 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[10]);
 		if (temp1 == temp2)
 		{
 			if (distance1 >= distance2)
@@ -1412,7 +1415,7 @@ void N_ANS_Ratio::addCalculate()
 		 temp1 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[19]);
 		 temp2 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[1]);
 		double upDistance = 0.0;
-		 distance1 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[19]);
+		distance1 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[19]);
 		distance2 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[1]);
 		if (temp1 == temp2)
 		{
@@ -1431,7 +1434,12 @@ void N_ANS_Ratio::addCalculate()
 		}
 
 		if (m_value != NULL)
-			m_value[30] = upDistance/Alldistance;
+		{
+			if (Alldistance != 0)
+				m_value[30] = upDistance / Alldistance;
+			else
+				m_value[30] = -1;
+		}	
 	}
 	else
 	{
@@ -1476,10 +1484,10 @@ void ANS_Me_Ratio::addCalculate()
 		//全面高
 		//判断N，ANS是否在PoOr同侧
 		bool temp1 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[19]);
-		bool temp2 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[1]);
+		bool temp2 = judgePointAndLineRelationship(m_newVector[21], m_newVector[0], m_newVector[10]);
 		double Alldistance = 0.0;
 		double distance1 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[19]);
-		double distance2 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[1]);
+		double distance2 = pointToLine(m_newVector[21], m_newVector[0], m_newVector[10]);
 		if (temp1 == temp2)
 		{
 			if (distance1 >= distance2)
@@ -1519,7 +1527,13 @@ void ANS_Me_Ratio::addCalculate()
 		}
 
 		if (m_value != NULL)
-			m_value[31] = downDistance / Alldistance;
+		{
+			if (Alldistance != 0)
+				m_value[31] = downDistance / Alldistance;
+			else
+				m_value[31] = -1;
+		}
+			
 	}
 	else
 	{

@@ -8,7 +8,6 @@
 #include<opencv2\opencv.hpp>
 #include"globelVariable.h"
 #include"concreteDataType.h"
-
 #include"math.h"
 class MyItem :
 	public QObject, public QGraphicsItem//1.要自定义添加信号槽必须要继承QObject。2.还要添加宏Q_OBJECT
@@ -61,13 +60,6 @@ private:
 	//item 大小
 	int m_x;
 	int m_y;
-	//记录鼠标点集
-	//QVector<QPointF>  linePos;
-	//画画时所用工具
-	QPen *pen;
-	QBrush *brush;
-	//绘制文本时字体
-	QFont *font;
 	//按钮状态，进入不同的鼠标事件处理
 	ButtonState m_state;
 //需要更新的序号
@@ -93,43 +85,37 @@ private:
 private:
 	//画图需要用到的函数
 	void drawPainterPathLine(QPainter * painter);
-	void drawPoint(QPainter * painter,qreal x,qreal y);
-	//void drawLine(QPainter * painter, qreal startx, qreal starty, qreal endx, qreal endy);//画线段
-	 void drawText(QPainter * painter,qreal x,qreal y, const char * textContent);
-	//void drawlongLine(QPainter * painter, QPointF firstPoint, QPointF secondPoint);//画直线
-	//void drawRadial(QPainter * painter, QPointF firstPoint, QPointF secondPoint);//画射线，第一个参数为射线源点
-	//void drawRule_Tweed(QPainter * painter, QVector<QPointF>& _newVector);
-	void drawRule_default(QPainter *painter, QVector<QPointF>& _newVector);
 	//计算连点间连线距离
 	double lineDistance(QPointF p1,QPointF p2);
 	double square(const double num);
-	//double lineAngle(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
-	//void returnLineABC(QPointF p1, QPointF p2,double &A,double &B ,double &C);//返回一般式参数
-	//不同测试方法的文字提示的判断流程
-	//void tweedText(QVector<QPointF>& _newVector);
-	//根据关卡判断需要发送哪些文字提示
-//	void judgeText(QVector<QPointF>& _newVector);
 	////找到第一个没被确定的点,这次确定这一个点
 	void findFirstPoint();
 	//判断需要清除的结构点是否在本轮需测试的方法中
 	void judgeClear(int index);
-
 private:
 	//不同测试方法的文字提示的判断流程
-	void tweedText2();
 	//根据关卡判断需要发送哪些文字提示
 	void judgeText2();
-	//实现tweed
-	void  drawRule_Tweed2(QPainter * painter, QVector<QPointF>& _newVector);
+	//实现rule
+	void  drawRule_X(QPainter * painter, QVector<QPointF>& _newVector,decorateDataType *decorate_X[],int num);//测试方法配置指针数组，配置个数
 	//创建方法tweed等
 	void  createMethod();
 	//根据方法序号配置结构点计算类型
-	void  configurationStyle(testMethod *_myMethod, decorateDataType * _decorate[],int arrayNum);
-	testMethod *myTweed;
-	//tweed方法所需配置的序号
-	int *tweedIndex;
-	decorateDataType * decorate_tweed[14];//记录需要配置的函数
-	
+	void  configurationStyle(testMethod *_myMethod, decorateDataType * _decorate[],const int *Index,int arrayNum);
+	//按下按钮后数据初始化部分
+	void initializeLevelData(int level);
 
+	//5种测试方法的指针
+	testMethod *myTweed;
+	testMethod *myDowns;
+	testMethod *myWyile;
+	testMethod *mySoftTissue;
+	testMethod *myDefault;
+	//////tweed方法所需配置的序号
+	decorateDataType * decorate_Tweed[14];//记录需要配置的函数
+	decorateDataType * decorate_Downs[10];
+	decorateDataType * decorate_Wyile[10];
+	decorateDataType * decorate_Tissue[9];
+	decorateDataType * decorate_Default[10];
 };
 

@@ -22,21 +22,9 @@ MyItem::MyItem(const char * fileName, qreal x, qreal y, QObject * parent) :QObje
 	//开启itemchange的检测
 	setFlag(ItemSendsGeometryChanges, true);
 
-	//初始化画画工具
-	pen = new QPen();
-	brush = new QBrush();
-
 	//初始化鼠标按钮状态，默认是移动图片
-	m_state = STATE_MOVE;
-
-	//初始化字体
-	font = new QFont();
-	font->setFamily("Microsoft YaHei");
-	//大小
-	font->setPointSize(8);
-	//设置字符间距
-	font->setLetterSpacing(QFont::AbsoluteSpacing, 2);
-
+	m_state = STATE_DRAW;
+	setCursor(Qt::CrossCursor);
 	updataIndex = 0;
 	currentDrawIndex = 0;
 	gapNum = 60.0;
@@ -52,13 +40,11 @@ MyItem::MyItem(const char * fileName, qreal x, qreal y, QObject * parent) :QObje
 	{
 		text[i] = i - 2;
 	}
-	//初始化tweed所需方法
-	tweedIndex = new int[14];
-	for (int i = 0; i < 14; i++)
-	{
-		tweedIndex[i] = i; 
-
-	}
+	//初始化记录文字的Value数组
+	value = new double[valueNum];
+	for (int i = 0; i < valueNum; i++)
+		value[i] = -1;
+	
 	createMethod();
 
 	connect(this, SIGNAL(changeInfo(int &, int )), parent, SLOT(infoRecvChangeButton(int &,int )));
@@ -79,7 +65,18 @@ QRectF MyItem::boundingRect() const
 }
 MyItem::~MyItem()
 {
-
+	//delete value;
+	//value = NULL;
+	//delete myTweed;
+	//myTweed = NULL;
+	//delete myDefault;
+	//myDefault = NULL;
+	//delete myDowns;
+	//myDowns = NULL;
+	//delete mySoftTissue;
+	//mySoftTissue = NULL;
+	//delete myWyile;
+	//myWyile = NULL;
 }
 
 void MyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget *widget)
@@ -277,297 +274,49 @@ void MyItem::infoRecvText(int a)
 	setCursor(Qt::CrossCursor);
 	switch (a)
 	{
+	case 0:
+		initializeLevelData(0);
+		break;
 	case 1:		
-		textNumber = a;
-		delete text;
-		text = new int[23];
-		text[0] = 44;
-		text[1] = 45;
-		for (int i = 2; i < 23; i++)
-		{
-			text[i] = Tweed[i-2];
-		}	
-		topNum = 23;
-		//currentDrawIndex = 0;
-		updataIndex = 0;
-		//文字初始化
-		//对应下标记录对应的数据是否已经存在
-		value = new double[valueNum];
-		for (int i = 0; i < valueNum; i++)
-			value[i] = -1;
-		//对装饰数据计算赋值value
-		for (int i = 0; i < 14; i++)
-		{
-			decorate_tweed[i]->setPValue(value);
-		}
-		//判断是否点已经确定，更新划线和文字
-	//	tweedText(linePos);//+++++++++++++++++++++++
-		tweedText2();
-
-		this->update();
+		initializeLevelData(1);
 		break;
 	case 2:
-		textNumber = a;
+		initializeLevelData(2);	
 		break;
-
+	case 3:
+		initializeLevelData(3);
+		break;
+	case 4:
+		initializeLevelData(4);
 	default:
 		break;
 	}
 }
 void MyItem::drawPainterPathLine(QPainter * painter)
 {
-	painter->setRenderHint(QPainter::Antialiasing, true);
+	
 	switch (textNumber)
 	{
 	case 0:
-		drawRule_default(painter,linePos);
+		drawRule_X(painter, linePos, decorate_Default,10);
 		break;
 	case 1:
-		//drawRule_Tweed(painter, linePos);
-		drawRule_Tweed2(painter,linePos);
-
+		drawRule_X(painter, linePos, decorate_Tweed, 14);
+		break;
+	case 2:
+		drawRule_X(painter, linePos, decorate_Downs, 10);
+		break;
+	case 3:
+		drawRule_X(painter, linePos, decorate_Wyile, 10);
+		break;
+	case 4:
+		drawRule_X(painter, linePos, decorate_Tissue, 9);
 		break;
 	default:
 		break;
 	}
 }
 
-void MyItem::drawPoint(QPainter * painter,qreal x,qreal y)
-{	
-	//设置画点时画笔的颜色，线型,线宽
-	pen->setColor(QColor(240, 40, 60));
-	pen->setStyle(Qt::SolidLine);
-	pen->setWidth(1);
-	painter->setPen(*pen);
-	//设置笔刷,画实心矩形点
-	brush->setStyle(Qt::SolidPattern);
-	brush->setColor(QColor(240, 40, 60));
-	painter->setBrush(*brush);
-	//QRectF rectangle(x, y, 5, 5);
-	//painter->drawRoundedRect(rectangle,15.0, 15.0);
-	painter->drawRect(QRect(x-3, y-3, 6,6));
-}
-//
-//void MyItem::drawLine(QPainter * painter,qreal startx,qreal starty,qreal endx,qreal endy)
-//{
-//	//划线深蓝色（0,0,139）
-//	pen->setColor(QColor(0, 0, 139));
-//	pen->setStyle(Qt::SolidLine);
-//	pen->setWidth(1);
-//	painter->setPen(*pen);
-//	painter->drawLine(startx,starty,endx,endy);
-//}
-//
-void MyItem::drawText(QPainter * painter, qreal x, qreal y, const char * textContent)
-{
-	//使用字体
-	painter->setFont(*font);
-	pen->setColor(QColor(240, 40, 60));
-	painter->setPen(*pen);
-	painter->drawText(x+10,y,textContent);
-}
-//
-//void MyItem::drawlongLine(QPainter * painter, QPointF firstPoint, QPointF secondPoint)
-//{
-//	//划线深蓝色（0,0,139）
-//	pen->setColor(QColor(0, 0, 139));
-//	pen->setStyle(Qt::SolidLine);
-//	pen->setWidth(1);
-//
-//	double x1 = firstPoint.x();
-//	double y1 = firstPoint.y();
-//	double x2 = secondPoint.x();
-//	double y2 = secondPoint.y();
-//	if (x2 - x1 != 0)
-//	{	
-//		double a = (y2 - y1) / (x2 - x1);
-//		double b = (x2 * y1 - x1 * y2) / (x2 - x1);
-//		//QPointF topLeft(0,0);
-//		//QPointF rightBottom(m_x,m_y);
-//		//QRectF rect(topLeft,rightBottom);
-//		//if(rect.contains())
-//		QPointF newX1;
-//		QPointF newY1;
-//		if (b < 0)
-//		{
-//			newX1.setX(-b / a);
-//			newX1.setY(0);
-//		}
-//		else if (b>=0&&b<=m_y)
-//		{
-//			newX1.setX(0);
-//			newX1.setY(b);
-//		}
-//		else if(b>m_y)
-//		{
-//			newX1.setX((m_y - b) / a);
-//			newX1.setY(m_y);
-//		}
-//
-//		double  newY1_y = m_x*a + b;
-//		if (newY1_y < 0)
-//		{
-//			newY1.setX(-b/a);
-//			newY1.setY(0);
-//		}
-//		else if (newY1_y >= 0 && newY1_y <= m_y)
-//		{
-//			newY1.setX(m_x);
-//			newY1.setY(newY1_y);
-//		}
-//		else if(newY1_y>m_y)
-//		{
-//			newY1.setX((m_y - b) / a);
-//			newY1.setY(m_y);
-//		}
-//		painter->setPen(*pen);
-//		painter->drawLine(newX1, newY1);
-//	}
-//	else
-//	{
-//		QPointF newX1(x1, 0);
-//		QPointF newY1(x1, m_y);
-//		painter->setPen(*pen);
-//		painter->drawLine(newX1, newY1);
-//		return;
-//	}
-//	
-//
-//
-//}
-//void MyItem::drawRadial(QPainter * painter, QPointF firstPoint, QPointF secondPoint)
-//{
-//	//划线深蓝色（0,0,139）
-//	pen->setColor(QColor(0, 0, 139));
-//	pen->setStyle(Qt::SolidLine);
-//	pen->setWidth(1);
-//
-//	double x1 = firstPoint.x();
-//	double y1 = firstPoint.y();
-//	double x2 = secondPoint.x();
-//	double y2 = secondPoint.y();
-//	if (x2 - x1 != 0)
-//	{
-//		double a = (y2 - y1) / (x2 - x1);
-//		double b = (x2 * y1 - x1 * y2) / (x2 - x1);
-//
-//		//判断射线方向
-//		if (x1 - x2 > 0)
-//		{
-//			//射线向左
-//			QPointF newY1(0, b);
-//			painter->setPen(*pen);
-//			painter->drawLine(firstPoint, newY1);
-//		}
-//		else
-//		{
-//			//射线向右
-//			QPointF newY1(m_x, a*m_x + b);
-//			painter->setPen(*pen);
-//			painter->drawLine(firstPoint, newY1);
-//		}
-//	
-//	}
-//	else
-//		return;
-//}
-//
-//void MyItem::drawRule_Tweed(QPainter * painter, QVector<QPointF>& _newVector)
-//{
-//	//先画线
-//	//PNS与ANS
-//	if (_newVector[1] != QPointF(-200.0, -200.0) && _newVector[3] != QPointF(-200.0, -200.0))
-//	{
-//		drawlongLine(painter, _newVector[1], _newVector[3]);
-//	}
-//	//T1与Ar
-//	if (_newVector[12] != QPointF(-200.0, -200.0) && _newVector[13] != QPointF(-200.0, -200.0))
-//	{
-//		drawlongLine(painter, _newVector[12], _newVector[13]);
-//	}
-//	//N与S
-//	if (_newVector[19] != QPointF(-200.0, -200.0) && _newVector[20] != QPointF(-200.0, -200.0))
-//	{
-//		drawRadial(painter, _newVector[19], _newVector[20]);
-//	}
-//	//N与A、B
-//	if (_newVector[19] != QPointF(-200.0, -200.0) && _newVector[2] != QPointF(-200.0, -200.0))
-//	{
-//		drawLine(painter, _newVector[19].x(), _newVector[19].y(),_newVector[2].x(), _newVector[2].y());
-//	}
-//	if (_newVector[19] != QPointF(-200.0, -200.0) && _newVector[6] != QPointF(-200.0, -200.0))
-//	{
-//		drawLine(painter, _newVector[19].x(), _newVector[19].y(), _newVector[6].x(), _newVector[6].y());
-//	}
-//	//T2与me
-//	if (_newVector[10] != QPointF(-200.0, -200.0) && _newVector[11] != QPointF(-200.0, -200.0))
-//	{
-//		drawlongLine(painter, _newVector[10], _newVector[11]);
-//	}
-//	//LIA与LI
-//	if (_newVector[27] != QPointF(-200.0, -200.0) && _newVector[26] != QPointF(-200.0, -200.0))
-//	{
-//		drawlongLine(painter, _newVector[27], _newVector[26]);
-//	}
-//	//or与po
-//	if (_newVector[0] != QPointF(-200.0, -200.0) && _newVector[21] != QPointF(-200.0, -200.0))
-//	{
-//		drawlongLine(painter, _newVector[0], _newVector[21]);
-//	}
-//	//L6,L1
-//	if (_newVector[29] != QPointF(-200.0, -200.0) && _newVector[26] != QPointF(-200.0, -200.0))
-//	{
-//		drawLine(painter, _newVector[29].x(), _newVector[29].y(), _newVector[26].x(), _newVector[26].y());
-//	}
-//	//UI,LI
-//	if (_newVector[24] != QPointF(-200.0, -200.0) && _newVector[26] != QPointF(-200.0, -200.0))
-//	{
-//		drawLine(painter, _newVector[24].x(), _newVector[24].y(), _newVector[26].x(), _newVector[26].y());
-//	}
-//	//pos与LL
-//	if (_newVector[43] != QPointF(-200.0, -200.0) && _newVector[43] != QPointF(-200.0, -200.0))
-//	{
-//		drawLine(painter, _newVector[40].x(), _newVector[40].y(), _newVector[43].x(), _newVector[43].y());
-//	}
-//	//标准点A与标准点B
-//	if (_newVector[44] != QPointF(-200.0, -200.0) && _newVector[45] != QPointF(-200.0, -200.0))
-//	{
-//		drawLine(painter, _newVector[44].x(), _newVector[44].y(), _newVector[45].x(), _newVector[45].y());	
-//	}
-//	
-//	//结构点画点
-//	for (int i = 0; i < 46; i++)
-//	{
-//		if (_newVector[i] != QPointF(-200.0, -200.0))
-//			drawPoint(painter, _newVector[i].x(), _newVector[i].y());
-//	}
-//
-//	//最后绘制结构点文字
-//		for (int i = 0; i <46; i++)
-//		{
-//			if (_newVector[i] != QPointF(-200.0, -200.0))
-//			drawText(painter, _newVector[i].x(), _newVector[i].y(), toothPosition_ENGLISH[i]);
-//		}
-//	
-//}
-
-void MyItem::drawRule_default(QPainter * painter, QVector<QPointF>& _newVector)
-{
-	//结构点画点
-	for (int i = 0; i <46; i++)
-	{
-		if (_newVector[text[i]] != QPointF(-200.0, -200.0))
-			drawPoint(painter, _newVector[text[i]].x(), _newVector[text[i]].y());
-	}
-
-	//最后绘制结构点文字
-	for (int i = 0; i <46; i++)
-	{
-		if (_newVector[text[i]] != QPointF(-200.0, -200.0))
-			drawText(painter, _newVector[text[i]].x(), _newVector[text[i]].y(), toothPosition_ENGLISH[text[i]]);
-	}
-
-}
 
 double MyItem::lineDistance(QPointF p1, QPointF p2)
 {
@@ -578,209 +327,7 @@ double MyItem::square(const double num)
 {
 	return num * num;
 }
-//
-//double MyItem::lineAngle(QPointF p1, QPointF p2, QPointF p3, QPointF p4)
-//{	
-//	//用标准式表示直线，保存ABC，Ax+By+C =0
-//	double A1, B1, C1;
-//	double A2, B2, C2;
-//	returnLineABC(p1,p2,A1,B1,C1);
-//	returnLineABC(p3,p4,A2,B2,C2);
-//
-//	double v = A1*A2 + B1*B2;
-//	if (v == 0)
-//		return 90;
-//
-//	double t = (A1*B2 - A2*B1) / v;
-//	if (t < 0)
-//		t = -t;
-//	 
-//	return atan(t) * 180.0 / PI;
-//}
-//
-//void MyItem::returnLineABC(QPointF p1, QPointF p2, double &A, double &B, double &C)
-//{
-//	if (p1.x() == p2.x())
-//	{
-//		A = 1;
-//		B = 0;
-//		C = -p1.x();
-//	}
-//	else if (p1.y() == p2.y())
-//	{
-//		A = 0;
-//		B = 1;
-//		C = -p1.y();
-//	}
-//	else
-//	{
-//		A = p2.y() - p1.y();
-//		B = p1.x() - p2.x();
-//		C = p2.x()*p1.y() - p1.x()*p2.y();
-//	}
-//}
-//
-//void MyItem::tweedText(QVector<QPointF>& _newVector)
-//{
-//	bool bSend = false;
-//	
-//	//FMIA
-//	if(_newVector[0] != QPointF(-200.0, -200.0)&& _newVector[21] != QPointF(-200.0, -200.0)&& _newVector[26] != QPointF(-200.0, -200.0)&& _newVector[27] != QPointF(-200.0, -200.0))
-//	{ 
-//		double angel = lineAngle(_newVector[0], _newVector[21], _newVector[26], _newVector[27]);
-//		value[0] = angel; 
-//		bSend = true;
-//	}
-//	else {
-//		value[0] = -1;
-//	}
-//
-//	//FMA
-//	if (_newVector[0] != QPointF(-200.0, -200.0) && _newVector[21] != QPointF(-200.0, -200.0) && _newVector[11] != QPointF(-200.0, -200.0) && _newVector[10] != QPointF(-200.0, -200.0))
-//	{
-//		double angel = lineAngle(_newVector[0], _newVector[21], _newVector[11], _newVector[10]);
-//		value[1] = angel;
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[1] = -1;
-//	}
-//	
-//	//IMPA
-//	if (_newVector[11] != QPointF(-200.0, -200.0) && _newVector[10] != QPointF(-200.0, -200.0) && _newVector[26] != QPointF(-200.0, -200.0) && _newVector[27] != QPointF(-200.0, -200.0))
-//	{
-//		double angel = lineAngle(_newVector[11], _newVector[10], _newVector[26], _newVector[27]);
-//		value[2] = angel;
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[2] = -1;
-//	}
-//	//SNA
-//	if (_newVector[20] != QPointF(-200.0, -200.0) && _newVector[19] != QPointF(-200.0, -200.0) && _newVector[2] != QPointF(-200.0, -200.0))
-//	{
-//		double angel = lineAngle(_newVector[20], _newVector[19], _newVector[19], _newVector[2]);
-//	//	index[3] = 1;
-//		value[3] = angel;
-//		bSend = true;
-//	}
-//	else
-//	{
-//	//	index[3] = 0;
-//		value[3] = -1;
-//	}
-//	//SNB
-//	if (_newVector[20] != QPointF(-200.0, -200.0) && _newVector[19] != QPointF(-200.0, -200.0) && _newVector[6] != QPointF(-200.0, -200.0))
-//	{
-//		double angel = lineAngle(_newVector[20], _newVector[19], _newVector[19], _newVector[6]);
-//		value[4] = angel;
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[4] = -1;
-//	}
-//	//ANB
-//	if (_newVector[2] != QPointF(-200.0, -200.0)&& _newVector[19] != QPointF(-200.0, -200.0)&& _newVector[6] != QPointF(-200.0, -200.0))
-//	{
-//		double angel =lineAngle(_newVector[2],_newVector[19], _newVector[2],_newVector[6]);
-//		value[5] = angel;
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[5] = -1;
-//	}
-//	//AO-BO
-//
-//
-//	//OP角
-//	if (_newVector[29] != QPointF(-200.0, -200.0) && _newVector[26] != QPointF(-200.0, -200.0) && _newVector[0] != QPointF(-200.0, -200.0) && _newVector[21] != QPointF(-200.0, -200.0))
-//	{
-//		double angel = lineAngle(_newVector[29], _newVector[26], _newVector[0], _newVector[21]);
-//		value[7] = angel;
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[7] = -1;
-//	}
-//	//Z角
-//	if (_newVector[39] != QPointF(-200.0, -200.0) && _newVector[40] != QPointF(-200.0, -200.0) && _newVector[43] != QPointF(-200.0, -200.0))
-//	{
-//		if (_newVector[39].x() > _newVector[40].x())
-//		{
-//			double angel = lineAngle(_newVector[39], _newVector[43], _newVector[0], _newVector[21]);
-//			value[8] = angel;	
-//		}
-//		else
-//		{
-//			double angel = lineAngle(_newVector[40], _newVector[43], _newVector[0], _newVector[21]);
-//			value[8] = angel;
-//			
-//		}		
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[8] = -1;
-//	}
-//
-//
-//	//上唇厚度
-//
-//	//全颏厚度
-//
-//	//后面高
-//	if (_newVector[12] != QPointF(-200.0, -200.0) && _newVector[13] != QPointF(-200.0, -200.0))
-//	{
-//		//计算AR与T1的距离
-//		double length = lineDistance(_newVector[12], _newVector[13]);
-//		value[11] = length / gapNum * 10;
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[11] = -1;
-//	}
-//
-//	//前面高
-//	if (_newVector[1] != QPointF(-200.0, -200.0) && _newVector[3] != QPointF(-200.0, -200.0))
-//	{
-//		//计算pNS与ANS的距离
-//		double length = lineDistance(_newVector[1], _newVector[3]);
-//		value[12] = length/gapNum*10;
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[12] = -1;
-//	}
-//	//面高比
-//	if (value[11] != -1 && value[12] != -1)
-//	{
-//		value[13] = value[11] / value[12];
-//		bSend = true;
-//	}
-//	else
-//	{
-//		value[13] = -1;
-//	}
-//
-//	if(bSend)
-//	emit changeTextHint(valueNum, value);
-//
-//}
-//
-//void MyItem::judgeText(QVector<QPointF>& _newVector)
-//{
-//	if (textNumber == 1)
-//	{
-//		tweedText(_newVector);
-//	}
-//}
+
 
 void MyItem::findFirstPoint()
 {
@@ -824,10 +371,30 @@ void MyItem::judgeClear(int index)
 
 }
 
-void MyItem::tweedText2()
+
+void MyItem::judgeText2()
 {
-	decorate_tweed[13]->datacalculate();
-	
+	switch (textNumber)
+	{
+	case 0:
+		decorate_Default[9]->datacalculate();
+		break;
+	case 1:
+		decorate_Tweed[13]->datacalculate();
+		break;
+	case 2:
+		decorate_Downs[9]->datacalculate();
+		break;
+	case 3:
+		decorate_Wyile[9]->datacalculate();
+		break;
+	case 4:
+		decorate_Tissue[8]->datacalculate();
+		break;
+	default:
+		break;
+	}
+
 	//检查value是否有非-1，若有则发送信号
 	for (int i = 0; i < valueNum; i++)
 	{
@@ -838,50 +405,53 @@ void MyItem::tweedText2()
 	}
 }
 
-void MyItem::judgeText2()
-{
-	switch (textNumber)
-	{
-	case 0:
-		break;
-	case 1:
-		tweedText2();
-		break;
-	default:
-		break;
-	}
-}
 
-void MyItem::drawRule_Tweed2(QPainter * painter, QVector<QPointF>& _newVector)
+
+void MyItem::drawRule_X(QPainter * painter, QVector<QPointF>& _newVector, decorateDataType *decorate_X[],int num)
 {
 	//画线
 	//对装饰画线函数赋值painter
-	for (int i = 0; i < 14; i++)
+	for (int i = 0; i < num; i++)
 	{
-		decorate_tweed[i]->setQPainter(painter);
+		decorate_X[i]->setQPainter(painter);
 	}
-	decorate_tweed[13]->drawLineJudge();
-	//换标准线
-	decorate_tweed[13]->drawStandardLine(painter, _newVector);
-	//结构点画点
-	decorate_tweed[13]->drawStructurePoint(painter, _newVector,structNumber);
-	//最后绘制结构点文字
-	decorate_tweed[13]->drawStructureText(painter,_newVector,structNumber);
-
+	if (num - 1 > 0)
+	{
+		decorate_X[num - 1]->drawLineJudge();
+		//换标准线
+		decorate_X[num - 1]->drawStandardLine(painter, _newVector);
+		//结构点画点
+		decorate_X[num - 1]->drawStructurePoint(painter, _newVector, structNumber);
+		//最后绘制结构点文字
+		decorate_X[num - 1]->drawStructureText(painter, _newVector, structNumber);
+	}	
 }
 
 void MyItem::createMethod()
 {
 	//逐步装饰tweed
 	myTweed = new testMethod();
-	configurationStyle(myTweed,decorate_tweed,14);
+	configurationStyle(myTweed,decorate_Tweed,dataType_Tweed,14);
+	//逐步装饰myDowns
+	myDowns = new testMethod();
+	configurationStyle(myDowns, decorate_Downs,dataType_Tweed, 10);
+	//逐步装饰Wylie
+	myWyile = new testMethod();
+	configurationStyle(myWyile, decorate_Wyile, dataType_Wyile, 10);
+	//逐步装饰SoftTissue
+	mySoftTissue = new testMethod();
+	configurationStyle(mySoftTissue, decorate_Tissue, dataType_tissue, 9);
+	//逐步装饰默认方法
+	myDefault = new testMethod();
+	configurationStyle(myDefault, decorate_Default, dataType_default, 10);
+
 }
 
-void MyItem::configurationStyle(testMethod * _myMethod, decorateDataType * _decorate[],int arrayNum)
+void MyItem::configurationStyle(testMethod * _myMethod, decorateDataType * _decorate[],const int *index,int arrayNum)
 {
 	for (int i = 0; i < arrayNum; i++)
 	{
-		switch (tweedIndex[i])
+		switch (index[i])
 		{
 		case 0:
 			_decorate[i] = new FMIA(linePos, m_x, m_y);
@@ -1013,13 +583,76 @@ void MyItem::configurationStyle(testMethod * _myMethod, decorateDataType * _deco
 		if (i == 0)
 		{
 			_decorate[i]->setTestMethod(_myMethod);
+			_decorate[i]->setPValue(value);
 		}
 		else
 		{
 			_decorate[i]->setTestMethod(_decorate[i - 1]);
+			_decorate[i]->setPValue(value);
 		}
 
 	}
+}
+
+void MyItem::initializeLevelData(int level)
+{
+	textNumber = level;
+	
+	int  a=0;
+	const int *temp;//获取当前关卡的所需点的全局数组
+	switch (level)
+	{
+	case 0: a = 46;//本轮测试方法涉及的点加上1cmA和1cmB这两个
+			temp = DefalutPoint;
+			break;
+	case 1: a = 23;
+			temp = Tweed;
+			break;
+	case 2: a = 18;
+			temp = Downs;
+			break;
+	case 3: a = 13;
+			temp = Wylie;
+			break;
+	case 4: a = 17;
+			temp = tissue;
+			break;
+	default:
+			a = 46;
+			break;
+	}
+	if(text!=NULL)
+	delete text;
+	if (a >= 2)
+	{
+		text = new int[a];
+		text[0] = 44;
+		text[1] = 45;
+		for (int i = 2; i < a; i++)
+		{
+			text[i] = temp[i - 2];
+		}
+	}	
+	else
+	{
+		text = new int[46];//初始化测试方法，默认为全部
+		text[0] = 44;
+		text[1] = 45;
+		for (int i = 2; i < 46; i++)
+		{
+			text[i] = i - 2;
+		}
+	}
+	topNum = a;
+	updataIndex = 0;
+	//文字初始化
+	//对应下标记录对应的数据全部归0
+	for (int i = 0; i < valueNum; i++)
+		value[i] = -1;
+
+	//判断是否点已经确定，更新划线和文字
+	judgeText2();
+	this->update();
 }
 
 int MyItem::getCurrentDrawIndex()

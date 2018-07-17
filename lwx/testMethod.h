@@ -32,17 +32,6 @@ protected:
 	bool  judgePointAndLineRelationship(QPointF p1, QPointF p2, QPointF p3);//判断点在直线上方还是下方
 	QPointF lineIntersection(QPointF p1, QPointF p2, QPointF p3,QPointF p4);
 	//画线部分函数
-	void longLinePoOr(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y);
-	void longLineLIALI(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y);
-	void longLineT2Me(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y);
-	void longLineLLPos(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y);
-	void longLineART1(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y);
-	void lineNA(QPainter * painter, QVector<QPointF>& _newVector);
-	void lineNB(QPainter * painter, QVector<QPointF>& _newVector);
-	void linePNSANS(QPainter * painter, QVector<QPointF>& _newVector);
-	void lineNPog(QPainter * painter, QVector<QPointF>& _newVector);
-	void radialNS(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y);
-	
 	void lineXtoIntersection(QPainter * painter, QVector<QPointF>& _newVector,int i,int j,int m,int n);//i,j为线，m为离线较远的一个点
 	void lineXtoFoot(QPainter * painter, QVector<QPointF>& _newVector, int i, int j, int m);//i，j为线，m为线外一点
 	void lineQ1Q2(QPainter * painter, QVector<QPointF>& _newVector);//画Q1Q2

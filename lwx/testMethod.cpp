@@ -33,6 +33,7 @@ void testMethod::drawPoint(QPainter * painter, qreal x, qreal y)
 void testMethod::drawLine(QPainter * painter, qreal startx, qreal starty, qreal endx, qreal endy)
 {
 	//划线深蓝色（0,0,139）
+	painter->setRenderHint(QPainter::Antialiasing, true);
 	QPen pen;
 	pen.setColor(QColor(0, 0, 139));
 	pen.setStyle(Qt::SolidLine);
@@ -59,7 +60,7 @@ void testMethod::drawText(QPainter * painter, qreal x, qreal y, const char * tex
 
 void testMethod::drawlongLine(QPainter * painter, QPointF firstPoint, QPointF secondPoint,int m_x,int m_y)
 {
-
+	painter->setRenderHint(QPainter::Antialiasing, true);
 	//划线深蓝色（0,0,139）
 	QPen pen;
 	pen.setColor(QColor(0, 0, 139));
@@ -78,42 +79,52 @@ void testMethod::drawlongLine(QPainter * painter, QPointF firstPoint, QPointF se
 		//QPointF rightBottom(m_x,m_y);
 		//QRectF rect(topLeft,rightBottom);
 		//if(rect.contains())
-		QPointF newX1;
-		QPointF newY1;
-		if (b < 0)
+		if (a == 0)
 		{
-			newX1.setX(-b / a);
-			newX1.setY(0);
+			return;
 		}
-		else if (b >= 0 && b <= m_y)
+		else
 		{
-			newX1.setX(0);
-			newX1.setY(b);
-		}
-		else if (b>m_y)
-		{
-			newX1.setX((m_y - b) / a);
-			newX1.setY(m_y);
-		}
+			QPointF newY1;
+			QPointF newX1;
+			
+			if (b < 0)
+			{
 
-		double  newY1_y = m_x*a + b;
-		if (newY1_y < 0)
-		{
-			newY1.setX(-b / a);
-			newY1.setY(0);
+				newX1.setX(-b / a);
+				newX1.setY(0);
+			}
+			else if (b >= 0 && b <= m_y)
+			{
+				newX1.setX(0);
+				newX1.setY(b);
+			}
+			else if (b>m_y)
+			{
+				newX1.setX((m_y - b) / a);
+				newX1.setY(m_y);
+			}
+
+			double  newY1_y = m_x*a + b;
+			if (newY1_y < 0)
+			{
+				newY1.setX(-b / a);
+				newY1.setY(0);
+			}
+			else if (newY1_y >= 0 && newY1_y <= m_y)
+			{
+				newY1.setX(m_x);
+				newY1.setY(newY1_y);
+			}
+			else if (newY1_y>m_y)
+			{
+				newY1.setX((m_y - b) / a);
+				newY1.setY(m_y);
+			}
+			painter->setPen(pen);
+			painter->drawLine(newX1, newY1);
+		
 		}
-		else if (newY1_y >= 0 && newY1_y <= m_y)
-		{
-			newY1.setX(m_x);
-			newY1.setY(newY1_y);
-		}
-		else if (newY1_y>m_y)
-		{
-			newY1.setX((m_y - b) / a);
-			newY1.setY(m_y);
-		}
-		painter->setPen(pen);
-		painter->drawLine(newX1, newY1);
 	}
 	else
 	{
@@ -144,55 +155,64 @@ void testMethod::drawRadial(QPainter * painter, QPointF firstPoint, QPointF seco
 	{
 		double a = (y2 - y1) / (x2 - x1);
 		double b = (x2 * y1 - x1 * y2) / (x2 - x1);
-
-		//判断射线方向
-		if (x1 - x2 > 0)
+		if (a == 0)
 		{
-			//射线向左
-			QPointF newX1;
-			
-			if (b < 0)
-			{
-				newX1.setX(-b / a);
-				newX1.setY(0);
-			}
-			else if (b >= 0 && b <= m_y)
-			{
-				newX1.setX(0);
-				newX1.setY(b);
-			}
-			else if (b>m_y)
-			{
-				newX1.setX((m_y - b) / a);
-				newX1.setY(m_y);
-			}
-			painter->setPen(pen);
-			painter->drawLine(firstPoint, newX1);
-
+			return;
 		}
 		else
 		{
-			//射线向右
-			QPointF newY1;
-			double  newY1_y = m_x*a + b;
-			if (newY1_y < 0)
+			//判断射线方向
+			if (x1 - x2 > 0)
 			{
-				newY1.setX(-b / a);
-				newY1.setY(0);
+
+
+				//射线向左
+				QPointF newX1;
+
+				if (b < 0)
+				{
+					newX1.setX(-b / a);
+					newX1.setY(0);
+				}
+				else if (b >= 0 && b <= m_y)
+				{
+					newX1.setX(0);
+					newX1.setY(b);
+				}
+				else if (b>m_y)
+				{
+					newX1.setX((m_y - b) / a);
+					newX1.setY(m_y);
+				}
+				painter->setPen(pen);
+				painter->drawLine(firstPoint, newX1);
+
 			}
-			else if (newY1_y >= 0 && newY1_y <= m_y)
+			else
 			{
-				newY1.setX(m_x);
-				newY1.setY(newY1_y);
+				//射线向右
+				QPointF newY1;
+				double  newY1_y = m_x*a + b;
+				if (newY1_y < 0)
+				{
+					newY1.setX(-b / a);
+					newY1.setY(0);
+				}
+				else if (newY1_y >= 0 && newY1_y <= m_y)
+				{
+					newY1.setX(m_x);
+					newY1.setY(newY1_y);
+				}
+				else if (newY1_y>m_y)
+				{
+					newY1.setX((m_y - b) / a);
+					newY1.setY(m_y);
+				}
+				painter->setPen(pen);
+				painter->drawLine(firstPoint, newY1);
 			}
-			else if (newY1_y>m_y)
-			{
-				newY1.setX((m_y - b) / a);
-				newY1.setY(m_y);
-			}
-			painter->setPen(pen);
-			painter->drawLine(firstPoint, newY1);
 		}
+		
 	
 	}
 	else
@@ -233,8 +253,8 @@ double testMethod::lineAngle(QPointF p1, QPointF p2, QPointF p3, QPointF p4)
 	QPointF newVector2;//向量p3p4
 	newVector1.setX(p2.x()-p1.x());
 	newVector1.setY(p2.y()-p1.y());
-	newVector2.setX(p4.x()-p4.x());
-	newVector2.setY(p4.y()-p4.x());
+	newVector2.setX(p4.x()-p3.x());
+	newVector2.setY(p4.y()-p3.y());
 	//acos(v1*v2/||v1||||v2||)
 	double  product = newVector1.x()* newVector2.x() + newVector1.y() + newVector2.y();
 	double temp = sqrt(square(newVector1.x())+square(newVector1.y()))*sqrt(square(newVector2.x())+square(newVector2.y()));
@@ -268,8 +288,22 @@ double testMethod::pointToLine(QPointF p1, QPointF p2, QPointF P3)
 	double A1, B1, C1;
 	returnLineABC(p1, p2, A1, B1, C1);
 	//   d = ( Ax0 + By0 + C ) / sqrt ( A*A + B*B );
+	double length = 0.0;
+	if (A1*A1 + B1*B1 != 0)
+	{
+	 length = (A1*P3.x() + B1*P3.y() + C1) / sqrt(A1*A1 + B1*B1);
+	 if (length < 0)
+		 length = -length;
+	}
+	else
+	{
+		if (P3.x() >= p2.x())
+			length = P3.x() - p2.x();
+		else
+			length = p2.x() - P3.x();
+	}
 
-	return (A1*P3.x() + B1*P3.y() + C1) / sqrt(A1*A1+B1*B1);
+	return length;
 }
 
 QPointF testMethod::footPoint(QPointF p1, QPointF p2, QPointF P3)
@@ -279,9 +313,19 @@ QPointF testMethod::footPoint(QPointF p1, QPointF p2, QPointF P3)
 	//x = (  B*B*x0  -  A*B*y0  -  A*C  ) / ( A*A + B*B );
 	//y = (-A*B*x0 + A*A*y0 - B*C) / (A*A + B*B);
 	QPointF foot;
-	foot.setX((B1*B1*P3.x()-A1*B1*P3.y()-A1*C1) / (A1*A1 + B1 + B1));
-	foot.setY(((-A1)*B1*P3.x()+A1*A1*P3.y()-B1*C1)/(A1*A1+B1*B1));
+	//保证除数不为0，为0时除数为本身
+	if ((A1*A1 + B1 * B1) != 0)
+	{		
+		foot.setX((B1*B1*P3.x() - A1*B1*P3.y() - A1*C1) / (A1*A1 + B1 * B1));
+		foot.setY(((-A1)*B1*P3.x() + A1*A1*P3.y() - B1*C1) / (A1*A1 + B1*B1));
+	}
+	else
+	{
+		foot.setX(P3.x());
+		foot.setY(P3.y());	
+	}
 	return foot;
+	
 }
 
 bool testMethod::judgePointAndLineRelationship(QPointF p1, QPointF p2, QPointF p3)
@@ -290,16 +334,30 @@ bool testMethod::judgePointAndLineRelationship(QPointF p1, QPointF p2, QPointF p
 	double y1 = p1.y();
 	double x2 = p2.x();
 	double y2 = p2.y();
-	double a = (y2 - y1) / (x2 - x1);
-	double b = (x2 * y1 - x1 * y2) / (x2 - x1);
-
-	if ((a*p3.x() + b) > p3.y())//点在直线下方
+	if (x2 - x1 != 0)
 	{
-		return false;
+		double a = (y2 - y1) / (x2 - x1);
+		double b = (x2 * y1 - x1 * y2) / (x2 - x1);
+
+		if ((a*p3.x() + b) > p3.y())//点在直线下方
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	else
 	{
-		return true;
+		if (p3.x() > x1)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }
 
@@ -324,81 +382,6 @@ QPointF testMethod::lineIntersection(QPointF p1, QPointF p2, QPointF p3, QPointF
 
 }
 
-void testMethod::longLinePoOr(QPainter * painter, QVector<QPointF>& _newVector, int _x, int _y)
-{
-	//or与po
-	if (_newVector[0] != QPointF(-200.0, -200.0) && _newVector[21] != QPointF(-200.0, -200.0))
-	{
-		drawlongLine(painter, _newVector[0], _newVector[21], _x,  _y);
-	}
-}
-
-void testMethod::longLineLIALI(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y)
-{
-	//LIA与LI
-	if (_newVector[27] != QPointF(-200.0, -200.0) && _newVector[26] != QPointF(-200.0, -200.0))
-	{
-		drawlongLine(painter, _newVector[27], _newVector[26],m_x,m_y);
-	}
-}
-
-void testMethod::longLineT2Me(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y)
-{
-	//T2与me
-	if (_newVector[10] != QPointF(-200.0, -200.0) && _newVector[11] != QPointF(-200.0, -200.0))
-	{
-		drawlongLine(painter, _newVector[10], _newVector[11],m_x,m_y);
-	}
-}
-
-void testMethod::longLineLLPos(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y)
-{
-	if (_newVector[40] != QPointF(-200.0, -200.0) && _newVector[43] != QPointF(-200.0, -200.0))
-	{
-		drawlongLine(painter, _newVector[40], _newVector[43], m_x, m_y);
-	}
-}
-
-void testMethod::longLineART1(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y)
-{
-	if (_newVector[13] != QPointF(-200.0, -200.0) && _newVector[12] != QPointF(-200.0, -200.0))
-	{
-		drawlongLine(painter, _newVector[13], _newVector[12], m_x, m_y);
-	}
-}
-
-void testMethod::lineNA(QPainter * painter, QVector<QPointF>& _newVector)
-{
-	//段NA
-	if (_newVector[19] != QPointF(-200.0, -200.0) && _newVector[2] != QPointF(-200.0, -200.0))
-	{
-		drawLine(painter, _newVector[19].x(), _newVector[19].y(),_newVector[2].x(),_newVector[2].y());
-	}
-}
-
-void testMethod::lineNB(QPainter * painter, QVector<QPointF>& _newVector)
-{
-	if (_newVector[19] != QPointF(-200.0, -200.0) && _newVector[6] != QPointF(-200.0, -200.0))
-	{
-		drawLine(painter, _newVector[19].x(), _newVector[19].y(), _newVector[6].x(), _newVector[6].y());
-	}
-}
-
-void testMethod::linePNSANS(QPainter * painter, QVector<QPointF>& _newVector)
-{
-	if (_newVector[3] != QPointF(-200.0, -200.0) && _newVector[1] != QPointF(-200.0, -200.0))
-	{
-		drawLine(painter, _newVector[3].x(), _newVector[3].y(), _newVector[1].x(), _newVector[1].y());
-	}
-}
-
-void testMethod::lineNPog(QPainter * painter, QVector<QPointF>& _newVector)
-{
-	if (_newVector[8] != QPointF(-200.0, -200.0) && _newVector[19] != QPointF(-200.0, -200.0))
-	{
-		drawLine(painter, _newVector[8].x(), _newVector[8].y(), _newVector[19].x(), _newVector[19].y());
-	}
-}
 
 void testMethod::lineXtoIntersection(QPainter * painter, QVector<QPointF>& _newVector, int i, int j, int m, int n)
 {
@@ -412,8 +395,12 @@ void testMethod::lineXtoIntersection(QPainter * painter, QVector<QPointF>& _newV
 
 void testMethod::lineXtoFoot(QPainter * painter, QVector<QPointF>& _newVector, int i, int j, int m)
 {
-	QPointF temp =footPoint(_newVector[i], _newVector[j], _newVector[m]);//垂足
-	drawLine(painter, _newVector[m].x(), _newVector[m].y(), temp.x(), temp.y());
+	if (_newVector[i]!= QPointF(-200.0, -200.0)&& _newVector[j]!= QPointF(-200.0, -200.0)&& _newVector[m] != QPointF(-200.0, -200.0))
+	{
+		QPointF temp = footPoint(_newVector[i], _newVector[j], _newVector[m]);//垂足
+		drawLine(painter, _newVector[m].x(), _newVector[m].y(), temp.x(), temp.y());
+	}
+	
 }
 
 
@@ -431,15 +418,6 @@ void testMethod::lineQ1Q2(QPainter * painter, QVector<QPointF>& _newVector)
 	}
 }
 
-void testMethod::radialNS(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y)
-{
-	//射线NS
-	if (_newVector[19] != QPointF(-200.0, -200.0) && _newVector[20] != QPointF(-200.0, -200.0))
-	{
-		drawRadial(painter, _newVector[19], _newVector[20],m_x,m_y);
-	}
-
-}
 
 void testMethod::longLineXtoY(QPainter * painter, QVector<QPointF>& _newVector, int m_x, int m_y, int i, int j)
 {
@@ -479,7 +457,7 @@ void testMethod::drawStructurePoint(QPainter * painter, QVector<QPointF>& _newVe
 void testMethod::drawStructureText(QPainter * painter, QVector<QPointF>& _newVector, int structNumber)
 {
 
-	for (int i = 0; i <46; i++)
+	for (int i = 0; i <structNumber; i++)
 	{
 		if (_newVector[i] != QPointF(-200.0, -200.0))
 			drawText(painter, _newVector[i].x(), _newVector[i].y(), toothPosition_ENGLISH[i]);

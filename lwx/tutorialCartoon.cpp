@@ -51,7 +51,7 @@ void tutorialCartoon::paintEvent(QPaintEvent * e)
 	
 	if (cartoonIndex == -1)
 	{
-		this->update();
+	//	this->update();
 	}
 	else
 	{

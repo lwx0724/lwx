@@ -194,13 +194,17 @@ void  InteractiveView::paintEvent(QPaintEvent *event)
 			painter.drawText(20, 20 + realHaveTextNum * 12, abc);
 			realHaveTextNum++;
 		
-			delete ab;	
-			delete abc;
-			ab = NULL;
-			abc = NULL;
-
-
-			
+			if (ab != NULL)
+			{
+				delete ab;
+				ab = NULL;
+			}
+			if (abc != NULL)
+			{
+				delete abc;
+				abc = NULL;
+			}
+				
 		}	
 	}
 }

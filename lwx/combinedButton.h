@@ -72,7 +72,10 @@ private:
 	int *text;
 	//本轮测试方法的上限
 	int topNum;
-	//测试方法图案是否初始化
+	//测试方法图案是否初始化,对连续按同一个按钮上锁，按其他按钮时解锁
 	bool bInitialize;
+	//初始化小按钮图片
+	void initializeSmallButton(int level);
+
 };
 

@@ -39,7 +39,6 @@ private:
 	int T1;//出现的计时器
 	int T2;//消失的计时器
 	bool bDraw;
-
 	//当前显示动画序号
 	int cartoonIndex;
 
