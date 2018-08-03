@@ -233,19 +233,19 @@ double testMethod::square(const double num)
 double testMethod::lineAngle(QPointF p1, QPointF p2, QPointF p3, QPointF p4)
 {
 	////用标准式表示直线，保存ABC，Ax+By+C =0
-	//double A1, B1, C1;
-	//double A2, B2, C2;
-	//returnLineABC(p1, p2, A1, B1, C1);
-	//returnLineABC(p3, p4, A2, B2, C2);
+	/*double A1, B1, C1;
+	double A2, B2, C2;
+	returnLineABC(p1, p2, A1, B1, C1);
+	returnLineABC(p3, p4, A2, B2, C2);
 
-	//double v = A1*A2 + B1*B2;
-	//if (v == 0)
-	//	return 90;
+	double v = A1*A2 + B1*B2;
+	if (v == 0)
+		return 90;
 
-	//double t = (A1*B2 - A2*B1) / v;
-	//if (t < 0)
-	//	t = -t;
-
+	double t = (A1*B2 - A2*B1) / v;
+	if (t < 0)
+		t = -t;
+	double ak = atan(t) * 180.0 / 3.1415927;;*/
 	//return atan(t) * 180.0 / 3.1415927;
 
 	//向量求角度
@@ -255,10 +255,22 @@ double testMethod::lineAngle(QPointF p1, QPointF p2, QPointF p3, QPointF p4)
 	newVector1.setY(p2.y()-p1.y());
 	newVector2.setX(p4.x()-p3.x());
 	newVector2.setY(p4.y()-p3.y());
-	//acos(v1*v2/||v1||||v2||)
-	double  product = newVector1.x()* newVector2.x() + newVector1.y() + newVector2.y();
-	double temp = sqrt(square(newVector1.x())+square(newVector1.y()))*sqrt(square(newVector2.x())+square(newVector2.y()));
-	return  acos(product / temp)* 180.0 / 3.1415927;
+	//公式acos(v1*v2/||v1||||v2||)
+	//此公式在部分情况下有问题
+	//double  product = newVector1.x()* newVector2.x() + newVector1.y() + newVector2.y();
+	//double temp = sqrt(square(newVector1.x())+square(newVector1.y()))*sqrt(square(newVector2.x())+square(newVector2.y()));
+	//return  acos(product / temp)* 180.0 / 3.1415927;
+	float theta = atan2(newVector1.x(), newVector1.y()) - atan2(newVector2.x(),newVector2.y());
+	if (theta > CV_PI)
+		theta -= 2 * CV_PI;
+	if (theta < -CV_PI)
+		theta += 2 * CV_PI;
+	if (theta < 0)
+		theta = -theta;
+
+	theta = theta * 180.0 / CV_PI;
+	return theta;
+
 }
 
 void testMethod::returnLineABC(QPointF p1, QPointF p2, double & A, double & B, double & C)
@@ -338,14 +350,14 @@ bool testMethod::judgePointAndLineRelationship(QPointF p1, QPointF p2, QPointF p
 	{
 		double a = (y2 - y1) / (x2 - x1);
 		double b = (x2 * y1 - x1 * y2) / (x2 - x1);
-
-		if ((a*p3.x() + b) > p3.y())//点在直线下方
+		//double c = y2 - a*x2;
+		if ((a*p3.x() + b) > p3.y())//点在直线上方,坐标系是从上到下从左到有
 		{
-			return false;
+			return true;
 		}
 		else
 		{
-			return true;
+			return false;
 		}
 	}
 	else
@@ -366,7 +378,7 @@ QPointF testMethod::lineIntersection(QPointF p1, QPointF p2, QPointF p3, QPointF
 	double A1, B1, C1;
 	returnLineABC(p1, p2, A1, B1, C1);
 	double A2, B2, C2;
-	returnLineABC(p1, p2, A2, B2, C2);
+	returnLineABC(p3, p4, A2, B2, C2);
 	QPointF intersection;//向量p1p2
 	double D = A1*B2 - A2*B1;
 	if (D != 0)

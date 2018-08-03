@@ -171,6 +171,10 @@ combinedButton::combinedButton( qreal _posX, qreal _posY, MyItem *item, tutorial
 	}
 	topNum = 46;
 	
+	//初始化自定义点
+	num = 2;
+	customPoint = new int[num];
+	customPoint[0] = 44; customPoint[1] = 45;
 }
 
 bool combinedButton::eventFilter(QObject * obj, QEvent * e)
@@ -237,6 +241,21 @@ void combinedButton::getBigGroup(int a, QPushButton * _temp)
 
 }
 
+void combinedButton::setCustomPoint(int _num, int * _customPoint)
+{
+	if (customPoint != NULL)
+	{
+		delete customPoint;
+		customPoint = NULL;
+	}
+	num = _num;
+	customPoint = new int[num];
+	for (int i = 0; i < num; i++)
+	{
+		customPoint[i] = _customPoint[i];
+	}	
+}
+
 void combinedButton::initializeSmallButton(int level)
 {
 	int  a = 0;
@@ -286,6 +305,29 @@ void combinedButton::initializeSmallButton(int level)
 	}
 }
 
+void combinedButton::initializeSmallButton2()
+{
+	if (text != NULL)
+	{
+		delete text;
+		text = NULL;
+	}
+	text = new int[num];
+	for (int i = 0; i < num; i++)
+	{
+		text[i] = customPoint[i];
+	}
+	//显示小按钮初始图片
+	if (!bInitialize)
+	{
+		for (int i = 0; i < 46; i++)
+		{
+			emit smallInfo2(i);//初始按钮群小按钮图案
+		}
+		bInitialize = true;
+	}
+}
+
 
 
 void combinedButton::infoRecvText(int a)
@@ -314,6 +356,10 @@ void combinedButton::infoRecvText(int a)
 	case 4:
 		bInitialize = false;
 		initializeSmallButton(4);
+		break;
+	case 5:
+		bInitialize = false;
+		initializeSmallButton2();
 		break;
 	default:
 		break;

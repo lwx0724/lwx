@@ -1,10 +1,2 @@
-﻿  Moc'ing tutorialCartoon.h...
-  moc_MyWidget.cpp
-  moc_combinedButton.cpp
-  moc_tutorialCartoon.cpp
-  MyWidget.cpp
-  combinedButton.cpp
-  main.cpp
-  tutorialCartoon.cpp
-  lwx.vcxproj -> C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\lwx.exe
+﻿  lwx.vcxproj -> C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\lwx.exe
   lwx.vcxproj -> C:\Users\11279\Documents\Visual Studio 2015\Projects\lwx\x64\Debug\lwx.pdb (Full PDB)

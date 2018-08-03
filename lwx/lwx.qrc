@@ -20,5 +20,14 @@
         <file>Black/success.png</file>
         <file>Black/warning.png</file>
         <file>Black/transparency.png</file>
+        <file>icon/setting.png</file>
+    </qresource>
+    <qresource prefix="/Dialog">
+        <file>White/arrowBottom.png</file>
+        <file>White/bottomArrow.png</file>
+        <file>White/left1.png</file>
+        <file>White/left2.png</file>
+        <file>White/right1.png</file>
+        <file>White/right2.png</file>
     </qresource>
 </RCC>

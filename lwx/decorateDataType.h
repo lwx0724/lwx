@@ -7,8 +7,10 @@ public:
 	 virtual void drawLineJudge();
 	 virtual void datacalculate();
 	 virtual void setTestMethod(testMethod* _mTestMethod);
-	  void  setQPainter(QPainter *_painter);
-	  void setPValue(double *_value);
+	 
+	 void  setQPainter(QPainter *_painter);
+	 void setPValue(double *_value);
+	 void getPoint(QVector<int> & a);
 	 ~ decorateDataType();
 	
 protected:
@@ -17,6 +19,7 @@ protected:
 	QPainter * m_painter;
 	int m_x;
 	int m_y;
+	QVector<int> relatePoint;
 private:
 };
 

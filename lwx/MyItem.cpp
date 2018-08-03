@@ -46,13 +46,14 @@ MyItem::MyItem(const char * fileName, qreal x, qreal y, QObject * parent) :QObje
 		value[i] = -1;
 	
 	createMethod();
-
+	myDefind = NULL;
+	
 	connect(this, SIGNAL(changeInfo(int &, int )), parent, SLOT(infoRecvChangeButton(int &,int )));
 	connect(this, SIGNAL(changeCartoon(int )), parent, SLOT(infoRecvParpare(int )));
 	connect(this, SIGNAL(showCurrentBigButton(int)), parent, SLOT(infoRecvBigButtonState(int)));
 	connect(this, SIGNAL(changViewRuler(double)), parent, SLOT(infoRecvGapNum(double)));
 	connect(this, SIGNAL(changeTextHint(int, double *)), parent, SLOT(infoRecvTextMessage(int, double *)));
-
+	connect(this, SIGNAL(changeCustomPoint(int, int *)), parent, SLOT(infoRecvCustomPoint(int, int *)));
 }
 
 
@@ -63,20 +64,24 @@ QRectF MyItem::boundingRect() const
 	//使图元原点在图元左上角
 	return QRectF(0, 0,m_x, m_y);
 }
+
+void MyItem::setDefindVector(QVector<int> a)
+{	
+	for (int i = defindVector.size(); i > 0; i--)
+	{
+		defindVector.remove(i-1);
+	}
+	for (int i = 0; i < a.size(); i++)
+	{
+		defindVector.append(a.at(i));
+	}	
+
+
+	//配置自定义方法
+	creatMyDefind();
+}
 MyItem::~MyItem()
 {
-	//delete value;
-	//value = NULL;
-	//delete myTweed;
-	//myTweed = NULL;
-	//delete myDefault;
-	//myDefault = NULL;
-	//delete myDowns;
-	//myDowns = NULL;
-	//delete mySoftTissue;
-	//mySoftTissue = NULL;
-	//delete myWyile;
-	//myWyile = NULL;
 }
 
 void MyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget *widget)
@@ -288,6 +293,10 @@ void MyItem::infoRecvText(int a)
 		break;
 	case 4:
 		initializeLevelData(4);
+		break;
+	case 5:
+		initializeLevelData2(5);//初始化自定义
+		break;
 	default:
 		break;
 	}
@@ -311,6 +320,9 @@ void MyItem::drawPainterPathLine(QPainter * painter)
 		break;
 	case 4:
 		drawRule_X(painter, linePos, decorate_Tissue, 9);
+		break;
+	case 5:
+		drawRule_X2(painter, linePos, decorate_defind);//自定义方法
 		break;
 	default:
 		break;
@@ -391,18 +403,24 @@ void MyItem::judgeText2()
 	case 4:
 		decorate_Tissue[8]->datacalculate();
 		break;
+	case 5:
+		if(decorate_defind.size() >0)
+			decorate_defind.at(decorate_defind.size() - 1)->datacalculate();
+		break;
 	default:
 		break;
 	}
 
-	//检查value是否有非-1，若有则发送信号
-	for (int i = 0; i < valueNum; i++)
-	{
-		if (value[i] != -1)
-		{
-			emit changeTextHint(valueNum, value);
-		}
-	}
+	////检查value是否有非-1，若有则发送信号
+	//for (int i = 0; i < valueNum; i++)
+	//{
+	//	if (value[i] != -1)
+	//	{
+	//		emit changeTextHint(valueNum, value);
+	//		break;
+	//	}
+	//}
+	emit changeTextHint(valueNum, value);
 }
 
 
@@ -415,7 +433,7 @@ void MyItem::drawRule_X(QPainter * painter, QVector<QPointF>& _newVector, decora
 	{
 		decorate_X[i]->setQPainter(painter);
 	}
-	if (num - 1 > 0)
+	if (num > 0)
 	{
 		decorate_X[num - 1]->drawLineJudge();
 		//换标准线
@@ -426,6 +444,26 @@ void MyItem::drawRule_X(QPainter * painter, QVector<QPointF>& _newVector, decora
 		decorate_X[num - 1]->drawStructureText(painter, _newVector, structNumber);
 	}	
 }
+void MyItem::drawRule_X2(QPainter * painter, QVector<QPointF>& _newVector, QVector<decorateDataType *> &decorate_defind)
+{
+	//画线
+	//对装饰画线函数赋值painter
+	int num = decorate_defind.size();
+	for (int i = 0; i < num; i++)
+	{
+		decorate_defind[i]->setQPainter(painter);
+	}
+	if (num> 0)
+	{
+		decorate_defind[num - 1]->drawLineJudge();
+		//换标准线
+		decorate_defind[num - 1]->drawStandardLine(painter, _newVector);
+		//结构点画点
+		decorate_defind[num - 1]->drawStructurePoint(painter, _newVector, structNumber);
+		//最后绘制结构点文字
+		decorate_defind[num - 1]->drawStructureText(painter, _newVector, structNumber);
+	}
+}
 
 void MyItem::createMethod()
 {
@@ -434,7 +472,7 @@ void MyItem::createMethod()
 	configurationStyle(myTweed,decorate_Tweed,dataType_Tweed,14);
 	//逐步装饰myDowns
 	myDowns = new testMethod();
-	configurationStyle(myDowns, decorate_Downs,dataType_Tweed, 10);
+	configurationStyle(myDowns, decorate_Downs, dataType_Downs, 10);
 	//逐步装饰Wylie
 	myWyile = new testMethod();
 	configurationStyle(myWyile, decorate_Wyile, dataType_Wyile, 10);
@@ -444,6 +482,235 @@ void MyItem::createMethod()
 	//逐步装饰默认方法
 	myDefault = new testMethod();
 	configurationStyle(myDefault, decorate_Default, dataType_default, 10);
+
+}
+
+void MyItem:: creatMyDefind()
+{
+	//删除前自定义方法
+	if (myDefind != NULL)
+	{
+		delete myDefind;
+		myDefind = NULL;
+	}
+	
+	//创建新自定义方法
+	myDefind = new testMethod();
+	if (decorate_defind.size() != 0)
+	{
+		for (int i = decorate_defind.size(); i>0; i--)
+		{
+			delete decorate_defind.at(i-1);
+			decorate_defind[i-1] = NULL;
+			decorate_defind.remove(i-1);
+		}
+	}
+
+	//首先要把前次点容器清空
+	for (int i = defindPoint.size(); i > 0; i--)
+	{
+		defindPoint.remove(i - 1);
+	}
+
+	//创建decorate_defind个数
+
+	//创建自定义方法
+	for (int i = 0; i < defindVector.size(); i++)
+	{
+		switch (defindVector.at(i))
+		{
+		case 0:
+			decorate_defind.append(new FMIA(linePos, m_x, m_y));//new FMIA(linePos, m_x, m_y)
+			break;
+		case 1:
+			decorate_defind.append(new FMA(linePos, m_x, m_y));
+			break;
+		case 2:
+			decorate_defind.append(new IMPA(linePos, m_x, m_y));
+			break;
+		case 3:
+			decorate_defind.append(new SNA(linePos, m_x, m_y));
+			break;
+		case 4:
+			decorate_defind.append(new SNB2(linePos, m_x, m_y));
+			break;
+		case 5:
+			decorate_defind.append(new ANB(linePos, m_x, m_y));
+			break;
+		case 6:
+			decorate_defind.append(new AOBO(linePos, m_x, m_y));
+			break;
+		case 7:
+			decorate_defind.append(new OP(linePos, m_x, m_y));
+			break;
+		case 8:
+			decorate_defind.append(new Z(linePos, m_x, m_y));
+			break;
+		case 9:
+			decorate_defind.append(new labrumDistance(linePos, m_x, m_y));
+			break;
+		case 10:
+			decorate_defind.append(new chinDistance(linePos, m_x, m_y));
+			break;
+		case 11:
+			decorate_defind.append(new ART1(linePos, m_x, m_y));
+			break;
+		case 12:
+			decorate_defind.append(new PNSANS(linePos, m_x, m_y));
+			break;
+		case 13:
+			decorate_defind.append(new surfaceHeightRatio(linePos, m_x, m_y));
+			break;
+		case 14:
+			decorate_defind.append(new surfaceAngle(linePos, m_x, m_y));
+			break;
+		case 15:
+			decorate_defind.append(new jawRaiseAngle(linePos, m_x, m_y));
+			break;
+		case 16:
+			decorate_defind.append(new ABSurfaceAngle(linePos, m_x, m_y));
+			break;
+		case 17:
+			decorate_defind.append(new underjawSurfaceAngle(linePos, m_x, m_y));
+			break;
+		case 18:
+			decorate_defind.append(new YAxisAngle(linePos, m_x, m_y));
+			break;
+		case 19:
+			decorate_defind.append(new UIUIA(linePos, m_x, m_y));
+			break;
+		case 20:
+			decorate_defind.append(new LIMP(linePos, m_x, m_y));
+			break;
+		case 21:
+			decorate_defind.append(new LIOP(linePos, m_x, m_y));
+			break;
+		case 22:
+			decorate_defind.append(new UI_APog(linePos, m_x, m_y));
+			break;
+		case 23:
+			decorate_defind.append(new Co_Pog(linePos, m_x, m_y));
+			break;
+		case 24:
+			decorate_defind.append(new Ptm_S(linePos, m_x, m_y));
+			break;
+		case 25:
+			decorate_defind.append(new ANS_Ptm(linePos, m_x, m_y));
+			break;
+		case 26:
+			decorate_defind.append(new Co_S(linePos, m_x, m_y));
+			break;
+		case 27:
+			decorate_defind.append(new N_Me(linePos, m_x, m_y));
+			break;
+		case 28:
+			decorate_defind.append(new N_ANS(linePos, m_x, m_y));
+			break;
+		case 29:
+			decorate_defind.append(new ANS_Me(linePos, m_x, m_y));
+			break;
+		case 30:
+			decorate_defind.append(new N_ANS_Ratio(linePos, m_x, m_y));
+			break;
+		case 31:
+			decorate_defind.append(new ANS_Me_Ratio(linePos, m_x, m_y));
+			break;
+		case 32:
+			decorate_defind.append(new Ptm_U6(linePos, m_x, m_y));
+			break;
+		case 33:
+			decorate_defind.append(new noseLabrumAngle(linePos, m_x, m_y));
+			break;
+		case 34:
+			decorate_defind.append(new upperlipSlope(linePos, m_x, m_y));
+			break;
+		case 35:
+			decorate_defind.append(new underSlope(linePos, m_x, m_y));
+			break;
+		case 36:
+			decorate_defind.append(new CmSnUL(linePos, m_x, m_y));
+			break;
+		case 37:
+			decorate_defind.append(new surfaceRaiseAngle(linePos, m_x, m_y));
+			break;
+		case 38:
+			decorate_defind.append(new allSurfaceRaiseAngle(linePos, m_x, m_y));
+			break;
+		case 39:
+			decorate_defind.append(new LL_B_Pos(linePos, m_x, m_y));
+			break;
+		case 40:
+			decorate_defind.append(new FCA(linePos, m_x, m_y));
+			break;
+
+		default:
+			break;
+		}
+		if (i == 0)
+		{
+			decorate_defind[i]->setTestMethod(myDefind);
+			decorate_defind[i]->setPValue(value);
+		}
+		else
+		{
+			decorate_defind[i]->setTestMethod(decorate_defind[i - 1]);
+			decorate_defind[i]->setPValue(value);
+		}
+		//统计本次自定义所需的点,添加不重复的点,
+		// 对自定义所需点进行排序，从小到大
+		int currentPointNum = defindPoint.size();
+		QVector<int> temp;
+		decorate_defind[i]->getPoint(temp);
+		bool repitititon =false;
+		//for (int i = 0; i < temp.size(); i++)
+		//{
+		//	for (int j = 0; j < currentPointNum; j++)
+		//	{
+		//		if (temp.at(i) == defindPoint.at(j))
+		//		{
+		//			break;
+		//			repitititon = true;
+		//		}
+		//	}
+		//	if (!repitititon)
+		//	{
+		//	}
+		//}
+		for (int n = 0; n < temp.size(); n++)
+		{
+			if (defindPoint.size() == 0)
+			{
+				defindPoint.append(temp.at(n));
+			}
+			else
+			{
+				for (int m = 0; m < defindPoint.size(); m++)
+				{
+					if (temp.at(n) > defindPoint.at(m))
+					{
+						continue;
+					}
+					else if (temp.at(n) == defindPoint.at(m))
+					{
+						break;
+						repitititon = true;
+					}
+					else
+					{
+						defindPoint.insert(m, temp.at(n));
+						break;
+					}
+				}
+
+				if (!repitititon)
+					defindPoint.append(temp.at(n));
+			}
+			
+		}
+			
+	}
+
+
 
 }
 
@@ -653,6 +920,54 @@ void MyItem::initializeLevelData(int level)
 	//判断是否点已经确定，更新划线和文字
 	judgeText2();
 	this->update();
+}
+
+void MyItem::initializeLevelData2(int level)
+{
+
+	int a = defindVector.size();//测试项数量
+	int b = defindPoint.size()+2;//测试点数量
+	textNumber = level;
+	if (text != NULL)
+	{
+		delete text;
+		text = NULL;
+	}
+		
+	if (a >0)
+	{
+		
+		text = new int[b];//测试项对应点的数量
+		text[0] = 44;
+		text[1] = 45;
+		for (int i = 2; i < b; i++)
+		{
+			text[i] = defindPoint[i - 2];//自定义方法所含对应点
+		}
+		emit changeCustomPoint(b,text);
+		topNum = b;
+		updataIndex = 0;
+		for (int i = 0; i < valueNum; i++)
+			value[i] = -1;
+		//判断是否点已经确定，更新划线和文字
+		judgeText2();
+		this->update();
+	}
+	else
+	{		
+		text = new int[2];//测试项对应点的数量
+		text[0] = 44;
+		text[1] = 45;
+		topNum = 0;
+		updataIndex = 0;
+		//for (int i = 0; i < valueNum; i++)
+		//	value[i] = -1;
+		////判断是否点已经确定，更新划线和文字
+		//judgeText2();
+		QMessageBox::information(NULL, "提示！", "未设置可选项！", QMessageBox::Ok);
+		//this->update();	
+	}
+		
 }
 
 int MyItem::getCurrentDrawIndex()

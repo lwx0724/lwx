@@ -2,6 +2,7 @@
 #include"qpainter.h"
 #include"math.h"
 #include"globelVariable.h"
+#include <opencv2/opencv.hpp>
 class testMethod
 {
 public:

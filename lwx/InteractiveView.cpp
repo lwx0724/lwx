@@ -183,10 +183,18 @@ void  InteractiveView::paintEvent(QPaintEvent *event)
 		{
 			char str2[5];
 			gcvt(textData[i] , 5, str2);
-			int newStrLen1 = strlen(textHintOnView[i]) + strlen(str2) + 1;
+			int newStrLen = strlen(textHintOnView[i])+strlen(" =")+1;
+			char *ab0 = (char *)malloc(sizeof(char) * newStrLen);
+			commonHelper::CreateNewStr(textHintOnView[i], " =", ab0);
+
+			/*int newStrLen1 = strlen(textHintOnView[i]) + strlen(str2) + 1;
 			char *ab = (char *)malloc(sizeof(char) * newStrLen1);
-			commonHelper::CreateNewStr(textHintOnView[i], str2,ab);
-		
+			commonHelper::CreateNewStr(textHintOnView[i], str2,ab);*/
+
+			int newStrLen1 = strlen(ab0) + strlen(str2) + 1;
+			char *ab = (char *)malloc(sizeof(char) * newStrLen1);
+			commonHelper::CreateNewStr(ab0, str2, ab);
+
 			int newStrLen2 = newStrLen1 + strlen(textUnit[i]) + 1;
 			char *abc = (char *)malloc(sizeof(char) * newStrLen2);
 			commonHelper::CreateNewStr(ab, textUnit[i], abc);

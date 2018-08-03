@@ -66,6 +66,9 @@
     <ClCompile Include="concreteDataType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="lwx.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="InteractiveView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MyDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

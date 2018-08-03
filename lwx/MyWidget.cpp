@@ -11,6 +11,7 @@ MyWidget::MyWidget(QWidget *parent)
 	pixmap_havePos = new QIcon(":/pixmap/Black/success.png");
 	pixmap_noPos = new QIcon(":/pixmap/Black/warning.png");
 	pixmap_transparency = new QIcon(":/pximap/Black/transparency.png");
+	pixmap_setting = new QIcon(":/pixmap/icon/setting.png");
 	//设置无边框
 	setWindowFlags(Qt::FramelessWindowHint);
 	//// 背景透明
@@ -98,6 +99,20 @@ MyWidget::MyWidget(QWidget *parent)
 		
 	}
 	m_pButtonMethod[0]->setChecked(true);
+	
+	//创建自定义按钮,位置处有编号，更改时需注意
+	customButton1 = new QPushButton(this);
+	settingButton1 = new QPushButton(this);
+	customButton1->setGeometry(1163, 490 + 30 * 5, 40, 25);
+	settingButton1->setGeometry(1163+45,490+30*5,25,25);
+	customButton1->setText("自定义");
+	m_pGroup->addButton(customButton1,5);
+	customButton1->setCheckable(true);
+	customButton1->setAutoExclusive(true);
+	customButton1->show();
+	settingButton1->setIcon(*pixmap_setting);
+	//初始化setting Dialog
+	m_pSetting = new MyDialog(this);
 
 	//默认方法下的小图标初始化
 	int defualtPointNum = 46;
@@ -113,6 +128,8 @@ MyWidget::MyWidget(QWidget *parent)
 	connect(m_pButtonMethod[2], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo2()));
 	connect(m_pButtonMethod[3], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo3()));
 	connect(m_pButtonMethod[4], SIGNAL(clicked(bool)), this, SLOT(emitTextInfo4()));
+	connect(customButton1, SIGNAL(clicked(bool)),this, SLOT(emitTextInfo5()));
+	connect(settingButton1,SIGNAL(clicked(bool)),this,SLOT(openSettingDialog()));
 	connect(this, SIGNAL(textInfoSend(int)), m_pItem, SLOT(infoRecvText(int)));
 	connect(this, SIGNAL(textInfoSend(int)), m_pButtonGroupWeight, SLOT(infoRecvText(int)));
 	bigGroup[44]->setStyleSheet("background:rgb(46,139,87);");
@@ -160,17 +177,39 @@ void MyWidget::emitTextInfo4()
 	infoRecvBigButtonState(m_pItem->getCurrentDrawIndex());
 }
 
+void MyWidget::emitTextInfo5()
+{
+	emit textInfoSend(5);
+	infoRecvBigButtonState(m_pItem->getCurrentDrawIndex());
+}
+
+void MyWidget::openSettingDialog()
+{
+	m_pSetting->show();
+}
+
 void  MyWidget::infoRecvGapNum(double gap)
 {
 	m_pView->setGapNum(gap);
 	m_pView->viewport()->update();//更新视口绘制，不是m_pView->updat
-
 }
 
 void MyWidget::infoRecvTextMessage( int n, double * value)
 {
-	m_pView->setText(n,value);//浅复制传入进去，debug时没问题但是在发布版本时有时会出现指针中断问题
+	m_pView->setText(n,value);//浅复制传入进去
 	m_pView->viewport()->update();
+	
+}
+
+void MyWidget::infoRecvchangItem()
+{
+	QVector<int> a;
+	m_pSetting->getVector(a);
+	m_pItem->setDefindVector(a);
+}
+
+void MyWidget::infoRecvCustomPoint(int n, int * point)
+{
 }
 
 void MyWidget::infoRecvBigButtonState(int a)

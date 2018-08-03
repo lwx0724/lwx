@@ -9,6 +9,7 @@
 #include"globelVariable.h"
 #include"concreteDataType.h"
 #include"math.h"
+#include <QMessageBox>
 class MyItem :
 	public QObject, public QGraphicsItem//1.要自定义添加信号槽必须要继承QObject。2.还要添加宏Q_OBJECT
 {
@@ -27,6 +28,8 @@ public:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 	//获得当前需要画的点
 	int getCurrentDrawIndex();
+	//设置当前的自定义容器
+	void setDefindVector(QVector<int> a);
 	~MyItem();
 protected:
 	void paint(QPainter *painter,const QStyleOptionGraphicsItem *,QWidget *);
@@ -53,6 +56,9 @@ signals:
 	void changViewRuler(double gap);//给view发送信号，设定1cm的gap像素
 signals:
 	void changeTextHint(int n,double *value);//给View发送信号，改变文字提示
+signals:
+	void changeCustomPoint(int n, int  *value);
+
 private:
 	QImage  *m_dcmImage;
 	cv::Mat mat;//原图大小
@@ -82,6 +88,10 @@ private:
 	int structNumber;
 //距离间隔
 	double gapNum;
+//自定义容器,存储测试选项编号
+	QVector<int> defindVector;
+//本次自定义所需的点的编号容器
+	QVector<int> defindPoint;
 private:
 	//画图需要用到的函数
 	void drawPainterPathLine(QPainter * painter);
@@ -98,24 +108,29 @@ private:
 	void judgeText2();
 	//实现rule
 	void  drawRule_X(QPainter * painter, QVector<QPointF>& _newVector,decorateDataType *decorate_X[],int num);//测试方法配置指针数组，配置个数
+	void drawRule_X2(QPainter * painter, QVector<QPointF>& _newVector, QVector<decorateDataType *> &decorate_defind);
 	//创建方法tweed等
 	void  createMethod();
+	void creatMyDefind();
 	//根据方法序号配置结构点计算类型
 	void  configurationStyle(testMethod *_myMethod, decorateDataType * _decorate[],const int *Index,int arrayNum);
 	//按下按钮后数据初始化部分
 	void initializeLevelData(int level);
-
+	void initializeLevelData2(int level);
+	
 	//5种测试方法的指针
 	testMethod *myTweed;
 	testMethod *myDowns;
 	testMethod *myWyile;
 	testMethod *mySoftTissue;
 	testMethod *myDefault;
+	testMethod *myDefind;
 	//////tweed方法所需配置的序号
 	decorateDataType * decorate_Tweed[14];//记录需要配置的函数
 	decorateDataType * decorate_Downs[10];
 	decorateDataType * decorate_Wyile[10];
 	decorateDataType * decorate_Tissue[9];
 	decorateDataType * decorate_Default[10];
+	QVector<decorateDataType *> decorate_defind;
 };
 

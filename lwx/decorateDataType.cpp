@@ -29,6 +29,18 @@ void decorateDataType::setPValue(double * _value)
 	m_value = _value;
 }
 
+void decorateDataType::getPoint(QVector<int>& a)
+{
+	////…Ó∏¥÷∆
+	//for (int i = 0; i < relatePoint.size(); i++)
+	//{
+	//	a.append(relatePoint.at(i));
+	//}
+
+	a = relatePoint;
+
+}
+
 decorateDataType::~decorateDataType()
 {
 }

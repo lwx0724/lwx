@@ -5,6 +5,8 @@ FMIA::FMIA(QVector<QPointF>& _newVector,int _x,int _y):decorateDataType(_x,_y),m
 {
 	/*m_painter = NULL;
 	m_value = NULL;*/
+
+	relatePoint <<21<<0<<27<<26;
 }
 
 void FMIA::drawLineJudge()
@@ -45,6 +47,7 @@ void FMIA::addCalculate()
 //FMA
 FMA::FMA( QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 21 << 0 << 10 << 11;
 }
 
 void FMA::drawLineJudge()
@@ -87,6 +90,7 @@ void FMA::addCalculate()
 //IMPA
 IMPA::IMPA(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 10 << 11 << 27 << 26;
 }
 
 void IMPA::drawLineJudge()
@@ -128,6 +132,7 @@ void IMPA::addCalculate()
 //SNA
 SNA::SNA(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 19 << 20  << 2;
 }
 
 void SNA::drawLineJudge()
@@ -169,6 +174,7 @@ void SNA::addCalculate()
 //SNB
 SNB2::SNB2(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 19 << 20 << 6 ;
 }
 
 void SNB2::drawLineJudge()
@@ -210,6 +216,7 @@ void SNB2::addCalculate()
 //ANB
 ANB::ANB(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 19 << 6 << 2 ;
 }
 
 void ANB::drawLineJudge()
@@ -238,8 +245,19 @@ void ANB::addCalculate()
 	if (m_newVector[19] != QPointF(-200.0, -200.0) && m_newVector[2] != QPointF(-200.0, -200.0) && m_newVector[6] != QPointF(-200.0, -200.0))
 	{
 		double angel = lineAngle(m_newVector[19], m_newVector[6], m_newVector[19], m_newVector[2]);
+		bool symbol = judgePointAndLineRelationship(m_newVector[19], m_newVector[6], m_newVector[2]);
 		if (m_value != NULL)
-			m_value[5] = angel;
+		{
+			if (symbol)
+			{
+				m_value[5] = -angel;
+			}
+			else
+			{
+				m_value[5] = angel;
+			}
+
+		}
 	}
 	else
 	{
@@ -251,6 +269,7 @@ void ANB::addCalculate()
 //AO-BO
 AOBO::AOBO(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 2 << 6 << 24 << 26<<28<<29;
 }
 
 void AOBO::drawLineJudge()
@@ -299,6 +318,7 @@ void AOBO::addCalculate()
 //OP角
 OP::OP(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 24 << 26 << 28 << 29<<21<<0;
 }
 
 void OP::drawLineJudge()
@@ -329,10 +349,10 @@ void OP::addCalculate()
 	{
 		QPointF Q1;//UILI中点
 		QPointF Q2;//U6L6中点
-		Q1.setX((m_newVector[24].x() + m_newVector[26].x()) / 2);
-		Q1.setY((m_newVector[24].y() + m_newVector[26].y()) / 2);
-		Q2.setX((m_newVector[28].x() + m_newVector[28].x()) / 2);
-		Q2.setY((m_newVector[29].y() + m_newVector[29].y()) / 2);
+		Q2.setX((m_newVector[24].x() + m_newVector[26].x()) / 2);
+		Q2.setY((m_newVector[24].y() + m_newVector[26].y()) / 2);
+		Q1.setX((m_newVector[28].x() + m_newVector[28].x()) / 2);
+		Q1.setY((m_newVector[29].y() + m_newVector[29].y()) / 2);
 		double angel = lineAngle(m_newVector[21], m_newVector[0], Q1, Q2);
 		if (m_value != NULL)
 			m_value[7] = angel;
@@ -347,6 +367,7 @@ void OP::addCalculate()
 //Z角
 Z::Z(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 40 << 43 << 0 << 21;
 }
 
 void Z::drawLineJudge()
@@ -388,6 +409,7 @@ void Z::addCalculate()
 //上唇厚度
 labrumDistance::labrumDistance(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 30 << 39 ;
 }
 
 void labrumDistance::drawLineJudge()
@@ -424,6 +446,7 @@ void labrumDistance::addCalculate()
 //全颏厚度
 chinDistance::chinDistance(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 43 << 19 << 6 ;
 }
 
 void chinDistance::drawLineJudge()
@@ -464,6 +487,7 @@ void chinDistance::addCalculate()
 //后面高
 ART1::ART1(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 13 << 12;
 }
 
 void ART1::drawLineJudge()
@@ -504,6 +528,7 @@ void ART1::addCalculate()
 //前面高
 PNSANS::PNSANS(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 3 << 1 ;
 }
 
 void PNSANS::drawLineJudge()
@@ -544,6 +569,7 @@ void PNSANS::addCalculate()
 //面高比
 surfaceHeightRatio::surfaceHeightRatio(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 13 << 12 << 3 << 1;
 }
 
 void surfaceHeightRatio::drawLineJudge()
@@ -588,6 +614,7 @@ void surfaceHeightRatio::addCalculate()
 //面角
 surfaceAngle::surfaceAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 21 << 0 << 8 << 19;
 }
 
 void surfaceAngle::drawLineJudge()
@@ -629,6 +656,7 @@ void surfaceAngle::addCalculate()
 //颌凸角
 jawRaiseAngle::jawRaiseAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 2 << 19 << 8 << 2;
 }
 
 void jawRaiseAngle::drawLineJudge()
@@ -683,6 +711,7 @@ void jawRaiseAngle::addCalculate()
 //AB面角
 ABSurfaceAngle::ABSurfaceAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 2 << 6 << 19 << 8;
 }
 
 void ABSurfaceAngle::drawLineJudge()
@@ -735,6 +764,7 @@ void ABSurfaceAngle::addCalculate()
 //下颌平面角
 underjawSurfaceAngle::underjawSurfaceAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 21 << 0 << 11 << 10;
 }
 
 void underjawSurfaceAngle::drawLineJudge()
@@ -776,6 +806,7 @@ void underjawSurfaceAngle::addCalculate()
 //Y轴角
 YAxisAngle::YAxisAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 20 << 9 << 21 << 0;
 }
 
 void YAxisAngle::drawLineJudge()
@@ -817,6 +848,7 @@ void YAxisAngle::addCalculate()
 //上下中切牙角
 UIUIA::UIUIA(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 24 << 25 << 26 << 27;
 }
 
 void UIUIA::drawLineJudge()
@@ -858,6 +890,7 @@ void UIUIA::addCalculate()
 //LI-MP
 LIMP::LIMP(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 10 << 11 << 27 << 26;
 }
 
 void LIMP::drawLineJudge()
@@ -899,6 +932,7 @@ void LIMP::addCalculate()
 //LI-OP
 LIOP::LIOP(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 24 <<26 << 27 << 28<<29;
 }
 
 void LIOP::drawLineJudge()
@@ -928,11 +962,11 @@ void LIOP::addCalculate()
 	{
 		QPointF Q1;//UILI中点
 		QPointF Q2;//U6L6中点
-		Q1.setX((m_newVector[24].x() + m_newVector[26].x()) / 2);
-		Q1.setY((m_newVector[24].y() + m_newVector[26].y()) / 2);
-		Q2.setX((m_newVector[28].x() + m_newVector[29].x()) / 2);
-		Q2.setY((m_newVector[28].y() + m_newVector[29].y()) / 2);
-		double angel = lineAngle(m_newVector[10], m_newVector[11], m_newVector[27], m_newVector[26]);
+		Q2.setX((m_newVector[24].x() + m_newVector[26].x()) / 2);
+		Q2.setY((m_newVector[24].y() + m_newVector[26].y()) / 2);
+		Q1.setX((m_newVector[28].x() + m_newVector[29].x()) / 2);
+		Q1.setY((m_newVector[28].y() + m_newVector[29].y()) / 2);
+		double angel = lineAngle(Q2, Q1, m_newVector[27], m_newVector[26]);
 		if (m_value != NULL)
 			m_value[21] = angel;
 	}
@@ -946,7 +980,7 @@ void LIOP::addCalculate()
 //上中切牙凸距
 UI_APog::UI_APog(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 24 << 2 << 8;
 }
 
 void UI_APog::drawLineJudge()
@@ -988,7 +1022,7 @@ void UI_APog::addCalculate()
 //Co-Pog
 Co_Pog::Co_Pog(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 16 << 8 << 11 << 10;
 }
 
 void Co_Pog::drawLineJudge()
@@ -1033,7 +1067,7 @@ void Co_Pog::addCalculate()
 //Ptm-s
 Ptm_S::Ptm_S(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 20 << 4 << 21 << 0;
 }
 
 void Ptm_S::drawLineJudge()
@@ -1078,7 +1112,7 @@ void Ptm_S::addCalculate()
 //ANS-Ptm
 ANS_Ptm::ANS_Ptm(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-	
+	relatePoint << 1 << 4 << 21 << 0;
 }
 
 void ANS_Ptm::drawLineJudge()
@@ -1123,7 +1157,7 @@ void ANS_Ptm::addCalculate()
 //Co-S
 Co_S::Co_S(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 20 << 16 << 21 << 0;
 }
 
 void Co_S::drawLineJudge()
@@ -1169,7 +1203,7 @@ void Co_S::addCalculate()
 //N-Me
 N_Me::N_Me(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 19 << 10 << 21 << 0;
 }
 
 void N_Me::drawLineJudge()
@@ -1232,7 +1266,7 @@ void N_Me::addCalculate()
 //N-ANS
 N_ANS::N_ANS(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 19 << 1 << 21 << 0;
 }
 
 void N_ANS::drawLineJudge()
@@ -1295,7 +1329,7 @@ void N_ANS::addCalculate()
 //ANS-Me
 ANS_Me::ANS_Me(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 1 << 10 << 21 << 0;
 }
 
 void ANS_Me::drawLineJudge()
@@ -1358,7 +1392,7 @@ void ANS_Me::addCalculate()
 //面上部高百分比
 N_ANS_Ratio::N_ANS_Ratio(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 19 << 1 << 21 << 10<<0;
 }
 
 void N_ANS_Ratio::drawLineJudge()
@@ -1451,7 +1485,7 @@ void N_ANS_Ratio::addCalculate()
 //面下部高百分比
 ANS_Me_Ratio::ANS_Me_Ratio(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 1 << 10 << 19 << 21<<0;
 }
 
 void ANS_Me_Ratio::drawLineJudge()
@@ -1545,7 +1579,7 @@ void ANS_Me_Ratio::addCalculate()
 //Ptm-U6
 Ptm_U6::Ptm_U6(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
-
+	relatePoint << 4 << 28 << 21 << 0;
 }
 
 void Ptm_U6::drawLineJudge()
@@ -1590,6 +1624,7 @@ void Ptm_U6::addCalculate()
 //鼻唇角
 noseLabrumAngle::noseLabrumAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 35 << 36 << 38 ;
 }
 
 void noseLabrumAngle::drawLineJudge()
@@ -1615,7 +1650,7 @@ void noseLabrumAngle::addLineJudge()
 
 void noseLabrumAngle::addCalculate()
 {
-	if (m_newVector[35] != QPointF(-200.0, -200.0) && m_newVector[36] != QPointF(-200.0, -200.0) && m_newVector[38] != QPointF(-200.0, -200.0) && m_newVector[27] != QPointF(-200.0, -200.0))
+	if (m_newVector[35] != QPointF(-200.0, -200.0) && m_newVector[36] != QPointF(-200.0, -200.0) && m_newVector[38] != QPointF(-200.0, -200.0))
 	{
 		double angel = lineAngle(m_newVector[36], m_newVector[35], m_newVector[36], m_newVector[38]);
 		if (m_value != NULL)
@@ -1631,6 +1666,7 @@ void noseLabrumAngle::addCalculate()
 //上唇倾斜角
 upperlipSlope::upperlipSlope(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 21 << 0 << 37 << 38;
 }
 
 void upperlipSlope::drawLineJudge()
@@ -1672,6 +1708,7 @@ void upperlipSlope::addCalculate()
 //下唇倾斜角
 underSlope::underSlope(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 21 << 0 << 42 << 41;
 }
 
 void underSlope::drawLineJudge()
@@ -1713,6 +1750,7 @@ void underSlope::addCalculate()
 //上下唇角
 CmSnUL::CmSnUL(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 41 << 37 << 42 ;
 }
 
 void CmSnUL::drawLineJudge()
@@ -1754,6 +1792,7 @@ void CmSnUL::addCalculate()
 //面凸角
 surfaceRaiseAngle::surfaceRaiseAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+
 }
 
 void surfaceRaiseAngle::drawLineJudge()
@@ -1781,6 +1820,7 @@ void surfaceRaiseAngle::addCalculate()
 //全面凸角
 allSurfaceRaiseAngle::allSurfaceRaiseAngle(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 34 << 33 << 43 ;
 }
 
 void allSurfaceRaiseAngle::drawLineJudge()
@@ -1823,6 +1863,7 @@ void allSurfaceRaiseAngle::addCalculate()
 //颏唇沟角
 LL_B_Pos::LL_B_Pos(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 41 << 42 << 43 ;
 }
 
 void LL_B_Pos::drawLineJudge()
@@ -1865,6 +1906,7 @@ void LL_B_Pos::addCalculate()
 //FCA
 FCA::FCA(QVector<QPointF>& _newVector, int _x, int _y) :decorateDataType(_x, _y), m_newVector(_newVector)
 {
+	relatePoint << 43 << 36 << 32 ;
 }
 
 void FCA::drawLineJudge()

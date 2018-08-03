@@ -22,6 +22,8 @@ public:
 	void setSmallGroup(int a,QPushButton *_temp);
 	void getBigGroup(QPushButton *_bigGroup[]);
 	void getBigGroup(int a, QPushButton *_temp);
+	void setCustomPoint(int _num,int *_customPoint);
+
 	//void paintEvent(QPaintEvent*e);
 ////定义每个按钮按下发送消息信号
 signals:
@@ -76,6 +78,11 @@ private:
 	bool bInitialize;
 	//初始化小按钮图片
 	void initializeSmallButton(int level);
+	//自定义初始化小按钮
+	void initializeSmallButton2();
 
+	//自定义所需点
+	int *customPoint;
+	int num;//数量包括1cma,1cmb
 };
 
